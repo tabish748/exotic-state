@@ -82,8 +82,7 @@ GENERAL SITE INFORMATION (use as baseline when specific context is missing):
 - Contact: https://www.exoticestates.com/contact
 - Terms & Conditions: https://www.exoticestates.com/terms-and-conditions
 - Privacy Policy: https://www.exoticestates.com/privacy-policy
-- Cookie Policy: https://www.exoticestates.com/cookie-policy
-- FAQ: https://www.exoticestates.com/faq
+- FAQ: https://www.exoticestates.com/faqs
 - Blog: https://www.exoticestates.com/blog
 Use these links only to reference that such pages exist; do NOT invent content from them. If a user asks about details on these pages and they are not in the current context, invite them to visit the specific link or ask if they want you to open it.`;
 
