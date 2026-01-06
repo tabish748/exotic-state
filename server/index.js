@@ -21,6 +21,8 @@ const app = express();
 app.use(helmet({
   contentSecurityPolicy: false, // Allow inline scripts for chatbot widget
   crossOriginEmbedderPolicy: false,
+  crossOriginOpenerPolicy: false, // Disable for HTTP (not HTTPS)
+  crossOriginResourcePolicy: false, // Allow cross-origin requests
 }));
 
 // Compression middleware
