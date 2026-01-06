@@ -133,17 +133,28 @@ app.use((req, res, next) => {
 // API Routes
 app.use('/api/chat', chatRoutes);
 
-// Serve static files (chatbot widget) with logging
+// Serve static files (chatbot widget) with logging and explicit CORS
 app.use('/public', (req, res, next) => {
   console.log(`📦 [STATIC] Serving file: ${req.path}`);
   console.log(`  📍 Origin: ${req.headers.origin || 'no-origin'}`);
+  
+  // Set CORS headers explicitly for static files (allow all origins including file://)
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Max-Age', '86400'); // 24 hours
+  
+  // Handle preflight requests
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  
   next();
 }, express.static(join(__dirname, '../public'), {
   setHeaders: (res, path) => {
     console.log(`  ✅ [STATIC] Sending file: ${path}`);
-    // Add CORS headers explicitly for static files
+    // Ensure CORS headers are set
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
   }
 }));
 
