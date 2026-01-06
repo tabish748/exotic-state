@@ -1,6 +1,21 @@
 import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 
-dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Load .env file with explicit path
+const envPath = join(__dirname, '../../.env');
+const result = dotenv.config({ path: envPath });
+
+// Debug logging for port configuration
+console.log('\n🔍 [CONFIG DEBUG]');
+console.log('  📁 .env path:', envPath);
+console.log('  📋 .env loaded:', result.error ? '❌ ' + result.error.message : '✅ Success');
+console.log('  🔑 process.env.PORT:', process.env.PORT || 'NOT SET');
+console.log('  📍 Current working directory:', process.cwd());
+console.log('');
 
 /**
  * Application Configuration
@@ -9,7 +24,12 @@ dotenv.config();
 export const config = {
   // Server Configuration
   server: {
-    port: parseInt(process.env.PORT) || 3000,
+    port: (() => {
+      const port = parseInt(process.env.PORT) || 8080;
+      console.log('  🚀 Server port configured:', port);
+      console.log('  📝 Source:', process.env.PORT ? 'process.env.PORT' : 'default (8080)');
+      return port;
+    })(),
     nodeEnv: process.env.NODE_ENV || 'development',
     isDevelopment: process.env.NODE_ENV !== 'production',
   },
