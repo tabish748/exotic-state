@@ -122,6 +122,11 @@
             }
         });
 
+        // Log the actual origin
+        console.log('📍 Current page origin:', window.location.origin);
+        console.log('📍 Current page href:', window.location.href);
+        console.log('📍 Protocol:', window.location.protocol);
+
         // Check if script loaded
         const checkWidget = () => {
             const status = document.getElementById('status');

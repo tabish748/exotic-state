@@ -30,16 +30,29 @@ app.use(compression());
 app.use(cors({
   origin: (origin, callback) => {
     // Allow requests with no origin (mobile apps, Postman, file://, etc.)
-    if (!origin) return callback(null, true);
+    if (!origin) {
+      console.log('[CORS] Allowing request with no origin');
+      return callback(null, true);
+    }
     
-    // Allow file:// protocol for local testing
-    if (origin.startsWith('file://') || origin === 'null') {
+    // Log origin for debugging
+    console.log('[CORS] Request origin:', origin);
+    
+    // Allow file:// protocol for local testing (all variations)
+    if (origin.startsWith('file://') || 
+        origin === 'null' || 
+        origin === 'file://' ||
+        origin.includes('file://') ||
+        origin.startsWith('/Users') || // macOS file paths
+        origin.startsWith('/') && !origin.startsWith('http')) { // Local file paths
+      console.log('[CORS] Allowing file:// or local file origin');
       return callback(null, true);
     }
     
     if (config.cors.allowedOrigins.includes(origin) || config.server.isDevelopment) {
       callback(null, true);
     } else {
+      console.log('[CORS] Blocking origin:', origin);
       callback(new Error('Not allowed by CORS'));
     }
   },
