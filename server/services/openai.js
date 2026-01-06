@@ -212,6 +212,41 @@ RESPONSE STYLE:
         prompt += `\nDestination Context: ${pageContext.destinationInfo.location} (${pageContext.destinationInfo.region})\n`;
       }
 
+      // Add additional page contexts (FAQ, About, etc.)
+      if (pageContext.additionalPages && pageContext.additionalPages.length > 0) {
+        prompt += `\n\n=== ADDITIONAL CONTEXT FROM RELEVANT PAGES ===\n`;
+        
+        for (const additionalPage of pageContext.additionalPages) {
+          prompt += `\n--- ${additionalPage.title || additionalPage.url} ---\n`;
+          prompt += `URL: ${additionalPage.url}\n`;
+          prompt += `Page Type: ${additionalPage.pageType}\n\n`;
+          
+          if (additionalPage.content) {
+            // For FAQ or generic pages, include the full main text
+            if (additionalPage.content.mainText) {
+              prompt += `CONTENT:\n${additionalPage.content.mainText.substring(0, 3000)}\n`;
+            }
+            
+            // Include headings for structure
+            if (additionalPage.content.headings && additionalPage.content.headings.length > 0) {
+              prompt += `\nKey Topics: ${additionalPage.content.headings.slice(0, 15).join(', ')}\n`;
+            }
+            
+            // Include key points if available
+            if (additionalPage.content.keyPoints && additionalPage.content.keyPoints.length > 0) {
+              prompt += `\nKey Points:\n`;
+              additionalPage.content.keyPoints.slice(0, 10).forEach(point => {
+                prompt += `- ${point}\n`;
+              });
+            }
+          }
+          
+          prompt += `\n`;
+        }
+        
+        prompt += `You can use information from these additional pages to provide comprehensive answers. Always cite the source page when using information from additional context.\n`;
+      }
+
       prompt += `\nRemember to use this context to provide relevant and helpful responses. If the user asks about something on this page, reference the context provided.\n`;
     }
 

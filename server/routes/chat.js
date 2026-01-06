@@ -8,6 +8,39 @@ import { config } from '../config/config.js';
 const router = express.Router();
 
 /**
+ * Detect if question requires additional context from general pages
+ */
+function detectRequiredPages(message) {
+  const messageLower = message.toLowerCase();
+  const additionalPages = [];
+
+  // FAQ-related keywords
+  const faqKeywords = [
+    'faq', 'minimum', 'stay', 'night', 'discount', 'month', 'children', 'air conditioning',
+    'contact', 'question', 'policy', 'allowed', 'equipped', 'photo', 'image',
+    'concierge', 'service', 'property manager', 'extended stay', 'long stay'
+  ];
+
+  // About-related keywords
+  const aboutKeywords = [
+    'about', 'company', 'who are you', 'history', 'team', 'exotic estates',
+    'specialist', 'work with', 'help with', 'what do you do'
+  ];
+
+  // Check if question is about FAQs
+  if (faqKeywords.some(keyword => messageLower.includes(keyword))) {
+    additionalPages.push('https://www.exoticestates.com/faqs');
+  }
+
+  // Check if question is about company info
+  if (aboutKeywords.some(keyword => messageLower.includes(keyword))) {
+    additionalPages.push('https://www.exoticestates.com/about-us');
+  }
+
+  return additionalPages;
+}
+
+/**
  * POST /api/chat
  * Send a message and get AI response
  * 
@@ -41,14 +74,49 @@ router.post('/chat', async (req, res) => {
       }
     }
 
+    // Detect if we need additional context from general pages (FAQ, About, etc.)
+    const additionalPages = detectRequiredPages(message);
+    const additionalContexts = [];
+
+    if (additionalPages.length > 0) {
+      console.log(`[Chat] Question requires additional context from: ${additionalPages.join(', ')}`);
+      
+      // Scrape additional pages in parallel
+      const scrapePromises = additionalPages.map(url => 
+        contextService.getPageContext(url).catch(err => {
+          console.error(`[Chat] Error scraping ${url}:`, err.message);
+          return null;
+        })
+      );
+      
+      const results = await Promise.all(scrapePromises);
+      additionalContexts.push(...results.filter(ctx => ctx !== null));
+      
+      console.log(`[Chat] Successfully scraped ${additionalContexts.length} additional pages`);
+    }
+
+    // Merge current page context with additional contexts
+    let mergedContext = pageContext;
+    if (additionalContexts.length > 0) {
+      mergedContext = {
+        ...pageContext,
+        additionalPages: additionalContexts,
+      };
+    }
+
     // Add user message to conversation
     conversationService.addMessage(conversation.id, {
       role: 'user',
       content: message.trim(),
-      pageContext: pageContext ? {
-        url: pageContext.url,
-        pageType: pageContext.pageType,
-        title: pageContext.title,
+      pageContext: mergedContext ? {
+        url: mergedContext.url,
+        pageType: mergedContext.pageType,
+        title: mergedContext.title,
+        additionalPages: additionalContexts.map(ctx => ({
+          url: ctx.url,
+          title: ctx.title,
+          pageType: ctx.pageType,
+        })),
       } : null,
     });
 
@@ -58,7 +126,7 @@ router.post('/chat', async (req, res) => {
     // Generate AI response
     let aiResponse;
     try {
-      aiResponse = await openaiService.generateResponse(messages, pageContext);
+      aiResponse = await openaiService.generateResponse(messages, mergedContext);
     } catch (error) {
       console.error('[Chat] OpenAI error:', error);
       
@@ -96,6 +164,11 @@ router.post('/chat', async (req, res) => {
         pageType: pageContext.pageType,
         title: pageContext.title,
       } : null,
+      additionalContext: additionalContexts.map(ctx => ({
+        url: ctx.url,
+        title: ctx.title,
+        pageType: ctx.pageType,
+      })),
       timestamp: new Date().toISOString(),
     });
 
