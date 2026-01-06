@@ -65,6 +65,7 @@
       this.conversationId = null;
       this.messages = [];
       this.isLoading = false;
+      this.isDarkTheme = (this.config.theme || 'light').toLowerCase() === 'dark';
       this.init();
     }
 
@@ -121,14 +122,15 @@
         display: none;
         width: 380px;
         height: 600px;
-        background: white;
+        background: ${this.isDarkTheme ? '#0f172a' : 'white'};
         border-radius: 16px;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        box-shadow: ${this.isDarkTheme ? '0 8px 32px rgba(0,0,0,0.5)' : '0 8px 32px rgba(0,0,0,0.2)'};
         flex-direction: column;
         overflow: hidden;
         position: absolute;
         bottom: 80px;
         ${this.config.position.includes('right') ? 'right: 0;' : 'left: 0;'}
+        color: ${this.isDarkTheme ? '#e5e7eb' : '#333'};
       `;
 
       // Header
@@ -160,7 +162,8 @@
         display: flex;
         flex-direction: column;
         gap: 12px;
-        background: #f8f9fa;
+        background: ${this.isDarkTheme ? '#0b1220' : '#f8f9fa'};
+        color: ${this.isDarkTheme ? '#e5e7eb' : '#333'};
       `;
 
       // Input container
@@ -168,8 +171,8 @@
       inputContainer.className = 'ee-chatbot-input-container';
       inputContainer.style.cssText = `
         padding: 16px;
-        background: white;
-        border-top: 1px solid #e0e0e0;
+        background: ${this.isDarkTheme ? '#0b1220' : 'white'};
+        border-top: 1px solid ${this.isDarkTheme ? '#1f2937' : '#e0e0e0'};
         display: flex;
         gap: 8px;
       `;
@@ -181,11 +184,19 @@
       input.style.cssText = `
         flex: 1;
         padding: 12px 16px;
-        border: 1px solid #e0e0e0;
+        border: 1px solid ${this.isDarkTheme ? '#1f2937' : '#e0e0e0'};
         border-radius: 24px;
         font-size: 14px;
         outline: none;
+        background: ${this.isDarkTheme ? '#0f172a' : '#fff'};
+        color: ${this.isDarkTheme ? '#e5e7eb' : '#333'};
       `;
+      input.addEventListener('focus', () => {
+        input.style.borderColor = this.config.primaryColor;
+      });
+      input.addEventListener('blur', () => {
+        input.style.borderColor = this.isDarkTheme ? '#1f2937' : '#e0e0e0';
+      });
 
       const sendButton = document.createElement('button');
       sendButton.id = 'ee-chatbot-send';
@@ -218,6 +229,11 @@
       this.messagesContainer = messagesContainer;
       this.input = input;
       this.sendButton = sendButton;
+
+      // Additional dark theme tweaks
+      if (this.isDarkTheme) {
+        button.style.boxShadow = '0 4px 12px rgba(0,0,0,0.35)';
+      }
 
       // Add hover effects
       button.addEventListener('mouseenter', () => {
@@ -357,6 +373,10 @@
 
       const bubble = document.createElement('div');
       bubble.className = 'ee-message-bubble';
+      const isUser = message.role === 'user';
+      const assistantBg = this.isDarkTheme ? '#1f2937' : 'white';
+      const assistantColor = this.isDarkTheme ? '#e5e7eb' : '#333';
+      const assistantShadow = this.isDarkTheme ? '' : 'box-shadow: 0 2px 4px rgba(0,0,0,0.1);';
       bubble.style.cssText = `
         max-width: 75%;
         padding: 12px 16px;
@@ -364,9 +384,9 @@
         font-size: 14px;
         line-height: 1.5;
         word-wrap: break-word;
-        ${message.role === 'user' 
+        ${isUser 
           ? `background: ${this.config.primaryColor}; color: white; border-bottom-right-radius: 4px;`
-          : 'background: white; color: #333; border-bottom-left-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);'
+          : `background: ${assistantBg}; color: ${assistantColor}; border-bottom-left-radius: 4px; ${assistantShadow}`
         }
       `;
       bubble.textContent = message.content;
@@ -383,14 +403,16 @@
         loadingDiv.id = 'ee-chatbot-loading';
         loadingDiv.className = 'ee-chatbot-message ee-message-assistant';
         loadingDiv.style.cssText = 'display: flex; justify-content: flex-start; margin-bottom: 8px;';
+        const assistantBg = this.isDarkTheme ? '#1f2937' : 'white';
+        const assistantColor = this.isDarkTheme ? '#e5e7eb' : '#333';
         loadingDiv.innerHTML = `
-          <div class="ee-message-bubble" style="background: white; color: #333; padding: 16px 20px; border-radius: 18px; border-bottom-left-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 8px;">
+          <div class="ee-message-bubble" style="background: ${assistantBg}; color: ${assistantColor}; padding: 16px 20px; border-radius: 18px; border-bottom-left-radius: 4px; ${this.isDarkTheme ? '' : 'box-shadow: 0 2px 4px rgba(0,0,0,0.1);'} display: flex; align-items: center; gap: 8px;">
             <div class="typing-indicator">
               <span></span>
               <span></span>
               <span></span>
             </div>
-            <span style="color: #64748b; font-size: 13px; margin-left: 4px;"></span>
+            <span style="color: ${this.isDarkTheme ? '#cbd5e1' : '#64748b'}; font-size: 13px; margin-left: 4px;"></span>
           </div>
         `;
         this.messagesContainer.appendChild(loadingDiv);
