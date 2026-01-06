@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exotic Estates Chatbot - Professional Testing Interface</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5568d3;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .header p {
+            opacity: 0.95;
+            font-size: 16px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-title svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text);
+            font-size: 14px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: var(--bg);
+            color: var(--text);
+            border: 2px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: #f1f5f9;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .quick-tests {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .quick-test-btn {
+            padding: 10px 16px;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+            font-size: 13px;
+        }
+
+        .quick-test-btn:hover {
+            border-color: var(--primary);
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .quick-test-btn .label {
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .quick-test-btn .url {
+            color: var(--text-light);
+            font-size: 11px;
+            word-break: break-all;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-badge.success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-badge.error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .status-badge.loading {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .context-viewer {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            max-height: 500px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .context-viewer .key {
+            color: #60a5fa;
+        }
+
+        .context-viewer .string {
+            color: #34d399;
+        }
+
+        .context-viewer .number {
+            color: #fbbf24;
+        }
+
+        .context-viewer .boolean {
+            color: #a78bfa;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 1024px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 500px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: #f8fafc;
+        }
+
+        .chat-message {
+            margin-bottom: 16px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .chat-message.user {
+            justify-content: flex-end;
+        }
+
+        .chat-message-bubble {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .chat-message.user .chat-message-bubble {
+            background: var(--primary);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .chat-message.assistant .chat-message-bubble {
+            background: white;
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-bottom-left-radius: 4px;
+        }
+
+        .chat-input-container {
+            padding: 16px;
+            background: white;
+            border-top: 2px solid var(--border);
+            display: flex;
+            gap: 12px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .test-results {
+            margin-top: 24px;
+        }
+
+        .test-result-item {
+            padding: 12px;
+            background: var(--bg);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .test-result-item .time {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-bottom: 4px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-light);
+        }
+
+        .empty-state svg {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 16px;
+            opacity: 0.5;
+        }
+
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 0;
+        }
+
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: inline-block;
+            animation: typing-bounce 1.4s infinite ease-in-out;
+        }
+
+        .typing-indicator span:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0s;
+        }
+
+        @keyframes typing-bounce {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.7;
+            }
+            30% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧪 Exotic Estates Chatbot - Testing Interface</h1>
+            <p>Professional URL-based testing tool for context-aware chatbot validation</p>
+        </div>
+
+        <!-- URL Input Section -->
+        <div class="card">
+            <div class="card-title">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                </svg>
+                Test URL
+            </div>
+            
+            <div class="input-group">
+                <label for="testUrl">Enter Exotic Estates Page URL</label>
+                <input 
+                    type="text" 
+                    id="testUrl" 
+                    placeholder="https://www.exoticestates.com/destinations/hawaii/maui"
+                    value="https://www.exoticestates.com/destinations/hawaii/maui"
+                >
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-primary" id="scrapeBtn" onclick="scrapePage()">
+                    <span id="scrapeBtnText">🔍 Scrape & View Context</span>
+                    <span id="scrapeSpinner" class="loading-spinner" style="display: none;"></span>
+                </button>
+                <button class="btn btn-secondary" onclick="clearResults()">Clear Results</button>
+            </div>
+
+            <div style="margin-top: 20px;">
+                <label style="margin-bottom: 12px; display: block; font-weight: 600;">Quick Test URLs</label>
+                <div class="quick-tests">
+                    <div class="quick-test-btn" onclick="setUrl('https://www.exoticestates.com')">
+                        <div class="label">🏠 Homepage</div>
+                        <div class="url">exoticestates.com</div>
+                    </div>
+                    <div class="quick-test-btn" onclick="setUrl('https://www.exoticestates.com/destinations/hawaii/maui')">
+                        <div class="label">🏝️ Maui, Hawaii</div>
+                        <div class="url">/destinations/hawaii/maui</div>
+                    </div>
+                    <div class="quick-test-btn" onclick="setUrl('https://www.exoticestates.com/destinations/hawaii/kauai')">
+                        <div class="label">🌺 Kauai, Hawaii</div>
+                        <div class="url">/destinations/hawaii/kauai</div>
+                    </div>
+                    <div class="quick-test-btn" onclick="setUrl('https://www.exoticestates.com/destinations/mexico/cabo')">
+                        <div class="label">🌴 Cabo, Mexico</div>
+                        <div class="url">/destinations/mexico/cabo</div>
+                    </div>
+                    <div class="quick-test-btn" onclick="setUrl('https://www.exoticestates.com/destinations/colorado/vail')">
+                        <div class="label">⛷️ Vail, Colorado</div>
+                        <div class="url">/destinations/colorado/vail</div>
+                    </div>
+                    <div class="quick-test-btn" onclick="setUrl('https://www.exoticestates.com/guides/maui-guide')">
+                        <div class="label">📖 Maui Guide</div>
+                        <div class="url">/guides/maui-guide</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Context Viewer -->
+        <div class="card" id="contextCard" style="display: none;">
+            <div class="card-title">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                Scraped Context
+                <span id="contextStatus" style="margin-left: auto;"></span>
+            </div>
+            <div id="contextViewer" class="context-viewer"></div>
+        </div>
+
+        <!-- Chat Testing -->
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-title">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                    </svg>
+                    Test Chat
+                </div>
+                <div class="chat-container">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="empty-state">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                            </svg>
+                            <p>Scrape a page first, then test the chat with context</p>
+                        </div>
+                    </div>
+                    <div class="chat-input-container">
+                        <input 
+                            type="text" 
+                            class="chat-input" 
+                            id="chatInput" 
+                            placeholder="Type your message..."
+                            onkeypress="handleChatKeyPress(event)"
+                        >
+                        <button class="btn btn-primary" onclick="sendChatMessage()" id="chatSendBtn">Send</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                    </svg>
+                    Test Results
+                </div>
+                <div id="testResults" class="test-results">
+                    <div class="empty-state">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                        </svg>
+                        <p>Test results will appear here</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3002/api';
+        let currentContext = null;
+        let conversationId = null;
+
+        function setUrl(url) {
+            document.getElementById('testUrl').value = url;
+        }
+
+        async function scrapePage() {
+            const url = document.getElementById('testUrl').value.trim();
+            if (!url) {
+                alert('Please enter a URL');
+                return;
+            }
+
+            const scrapeBtn = document.getElementById('scrapeBtn');
+            const scrapeBtnText = document.getElementById('scrapeBtnText');
+            const scrapeSpinner = document.getElementById('scrapeSpinner');
+            const contextCard = document.getElementById('contextCard');
+            const contextViewer = document.getElementById('contextViewer');
+            const contextStatus = document.getElementById('contextStatus');
+
+            // Show loading
+            scrapeBtn.disabled = true;
+            scrapeBtnText.style.display = 'none';
+            scrapeSpinner.style.display = 'inline-block';
+            contextStatus.innerHTML = '<span class="status-badge loading">⏳ Scraping...</span>';
+
+            try {
+                const response = await fetch(`${API_URL}/chat/context?url=${encodeURIComponent(url)}`);
+                const data = await response.json();
+
+                if (response.ok) {
+                    currentContext = data;
+                    contextCard.style.display = 'block';
+                    contextViewer.textContent = JSON.stringify(data, null, 2);
+                    contextStatus.innerHTML = '<span class="status-badge success">✅ Scraped Successfully</span>';
+                    
+                    addTestResult('success', `Scraped: ${url}`, {
+                        pageType: data.pageType,
+                        title: data.title,
+                        url: data.url
+                    });
+
+                    // Clear chat and show message
+                    const chatMessages = document.getElementById('chatMessages');
+                    chatMessages.innerHTML = `
+                        <div class="chat-message assistant">
+                            <div class="chat-message-bubble">
+                                ✅ Context loaded! I now have information about: <strong>${data.title || url}</strong><br><br>
+                                Page Type: <strong>${data.pageType}</strong><br>
+                                Ask me anything about this page!
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    throw new Error(data.error || 'Failed to scrape page');
+                }
+            } catch (error) {
+                contextStatus.innerHTML = '<span class="status-badge error">❌ Scraping Failed</span>';
+                contextViewer.textContent = `Error: ${error.message}`;
+                contextCard.style.display = 'block';
+                addTestResult('error', `Failed to scrape: ${url}`, { error: error.message });
+            } finally {
+                scrapeBtn.disabled = false;
+                scrapeBtnText.style.display = 'inline';
+                scrapeSpinner.style.display = 'none';
+            }
+        }
+
+        function handleChatKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendChatMessage();
+            }
+        }
+
+        async function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            if (!currentContext) {
+                alert('Please scrape a page first to load context');
+                return;
+            }
+
+            const chatMessages = document.getElementById('chatMessages');
+            const chatSendBtn = document.getElementById('chatSendBtn');
+
+            // Clear empty state
+            if (chatMessages.querySelector('.empty-state')) {
+                chatMessages.innerHTML = '';
+            }
+
+            // Add user message
+            const userMsg = document.createElement('div');
+            userMsg.className = 'chat-message user';
+            userMsg.innerHTML = `<div class="chat-message-bubble">${escapeHtml(message)}</div>`;
+            chatMessages.appendChild(userMsg);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            // Clear input and disable button
+            input.value = '';
+            chatSendBtn.disabled = true;
+            chatSendBtn.textContent = 'Sending...';
+
+            // Add loading message with typing animation
+            const loadingMsg = document.createElement('div');
+            loadingMsg.className = 'chat-message assistant';
+            loadingMsg.id = 'typing-indicator';
+            loadingMsg.innerHTML = `
+                <div class="chat-message-bubble" style="display: flex; align-items: center; gap: 8px; padding: 16px 20px;">
+                    <div class="typing-indicator">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <span style="color: var(--text-light); font-size: 13px;"></span>
+                </div>
+            `;
+            chatMessages.appendChild(loadingMsg);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            try {
+                const response = await fetch(`${API_URL}/chat/chat`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: message,
+                        conversationId: conversationId,
+                        pageUrl: currentContext.url
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Remove loading message
+                    loadingMsg.remove();
+
+                    // Add assistant response
+                    const assistantMsg = document.createElement('div');
+                    assistantMsg.className = 'chat-message assistant';
+                    assistantMsg.innerHTML = `<div class="chat-message-bubble">${escapeHtml(data.response)}</div>`;
+                    chatMessages.appendChild(assistantMsg);
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                    if (data.conversationId) {
+                        conversationId = data.conversationId;
+                    }
+
+                    addTestResult('success', `Chat: ${message.substring(0, 50)}...`, {
+                        responseLength: data.response.length,
+                        pageContext: data.pageContext
+                    });
+                } else {
+                    throw new Error(data.error || 'Failed to get response');
+                }
+            } catch (error) {
+                loadingMsg.remove();
+                const errorMsg = document.createElement('div');
+                errorMsg.className = 'chat-message assistant';
+                errorMsg.innerHTML = `<div class="chat-message-bubble" style="color: var(--error);">❌ Error: ${escapeHtml(error.message)}</div>`;
+                chatMessages.appendChild(errorMsg);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                addTestResult('error', `Chat failed: ${message}`, { error: error.message });
+            } finally {
+                chatSendBtn.disabled = false;
+                chatSendBtn.textContent = 'Send';
+            }
+        }
+
+        function addTestResult(type, message, data = {}) {
+            const testResults = document.getElementById('testResults');
+            
+            // Remove empty state
+            if (testResults.querySelector('.empty-state')) {
+                testResults.innerHTML = '';
+            }
+
+            const resultItem = document.createElement('div');
+            resultItem.className = 'test-result-item';
+            
+            const badgeClass = type === 'success' ? 'success' : 'error';
+            const icon = type === 'success' ? '✅' : '❌';
+            
+            resultItem.innerHTML = `
+                <div class="time">${new Date().toLocaleString()}</div>
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                    <span class="status-badge ${badgeClass}">${icon} ${type.toUpperCase()}</span>
+                    <strong>${message}</strong>
+                </div>
+                ${Object.keys(data).length > 0 ? `<pre style="font-size: 11px; color: var(--text-light); margin-top: 8px;">${JSON.stringify(data, null, 2)}</pre>` : ''}
+            `;
+            
+            testResults.insertBefore(resultItem, testResults.firstChild);
+        }
+
+        function clearResults() {
+            document.getElementById('testResults').innerHTML = `
+                <div class="empty-state">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                    <p>Test results will appear here</p>
+                </div>
+            `;
+            document.getElementById('contextCard').style.display = 'none';
+            document.getElementById('chatMessages').innerHTML = `
+                <div class="empty-state">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                    </svg>
+                    <p>Scrape a page first, then test the chat with context</p>
+                </div>
+            `;
+            currentContext = null;
+            conversationId = null;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Allow Enter key in URL input to trigger scrape
+        document.getElementById('testUrl').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                scrapePage();
+            }
+        });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,114 @@
+═══════════════════════════════════════════════════════════════
+  EXOTIC ESTATES CHATBOT - CLIENT SCRIPT TAG
+═══════════════════════════════════════════════════════════════
+
+INSTRUCTIONS FOR CLIENT:
+------------------------
+Add this script tag to any page on your website, just before 
+the closing </body> tag.
+
+REPLACE "YOUR-AWS-URL" with the actual AWS server URL provided.
+
+═══════════════════════════════════════════════════════════════
+
+BASIC SCRIPT TAG:
+-----------------
+
+<script src="https://YOUR-AWS-URL/public/chatbot-widget.js"
+        data-api-url="https://YOUR-AWS-URL/api"
+        data-config='{"theme": "light", "position": "bottom-right"}'></script>
+
+═══════════════════════════════════════════════════════════════
+
+EXAMPLE (with placeholder URL):
+--------------------------------
+
+<script src="https://exoticestates-chatbot-prod.us-east-1.elasticbeanstalk.com/public/chatbot-widget.js"
+        data-api-url="https://exoticestates-chatbot-prod.us-east-1.elasticbeanstalk.com/api"
+        data-config='{"theme": "light", "position": "bottom-right"}'></script>
+
+═══════════════════════════════════════════════════════════════
+
+CUSTOMIZATION OPTIONS:
+----------------------
+
+You can customize the chatbot appearance:
+
+<script src="https://YOUR-AWS-URL/public/chatbot-widget.js"
+        data-api-url="https://YOUR-AWS-URL/api"
+        data-config='{
+          "theme": "light",                    // "light" or "dark"
+          "position": "bottom-right",          // "bottom-right", "bottom-left", "top-right", "top-left"
+          "primaryColor": "#1a1a1a",          // Button color (hex code)
+          "buttonText": "Chat with us",        // Button text
+          "buttonIcon": "💬"                   // Button icon/emoji
+        }'></script>
+
+═══════════════════════════════════════════════════════════════
+
+INTEGRATION EXAMPLES:
+---------------------
+
+HTML PAGE:
+----------
+Add before closing </body> tag:
+
+<script src="https://YOUR-AWS-URL/public/chatbot-widget.js"
+        data-api-url="https://YOUR-AWS-URL/api"
+        data-config='{"theme": "light", "position": "bottom-right"}'></script>
+
+VUE.JS:
+-------
+In your Vue component or layout:
+
+mounted() {
+  const script = document.createElement('script');
+  script.src = 'https://YOUR-AWS-URL/public/chatbot-widget.js';
+  script.setAttribute('data-api-url', 'https://YOUR-AWS-URL/api');
+  script.setAttribute('data-config', JSON.stringify({
+    theme: 'light',
+    position: 'bottom-right'
+  }));
+  document.body.appendChild(script);
+}
+
+NEXT.JS:
+--------
+In _app.js or layout component:
+
+useEffect(() => {
+  const script = document.createElement('script');
+  script.src = 'https://YOUR-AWS-URL/public/chatbot-widget.js';
+  script.setAttribute('data-api-url', 'https://YOUR-AWS-URL/api');
+  script.setAttribute('data-config', JSON.stringify({
+    theme: 'light',
+    position: 'bottom-right'
+  }));
+  document.body.appendChild(script);
+}, []);
+
+═══════════════════════════════════════════════════════════════
+
+TESTING:
+--------
+After adding the script tag:
+
+1. Open the page in your browser
+2. Look for the chat button in the bottom-right corner
+3. Click the button to open the chat window
+4. Send a test message
+5. You should receive an AI response
+
+If the chatbot doesn't appear:
+- Check browser console (F12) for errors
+- Verify the script URL is correct
+- Contact support if issues persist
+
+═══════════════════════════════════════════════════════════════
+
+SUPPORT:
+--------
+For questions or issues, contact technical support.
+
+═══════════════════════════════════════════════════════════════
+

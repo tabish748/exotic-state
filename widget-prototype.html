@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exotic Estates Chatbot - Widget Prototype</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 18px;
+            opacity: 0.95;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .section {
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #1e293b;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .demo-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            min-height: 400px;
+        }
+
+        .demo-card h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #1e293b;
+        }
+
+        .demo-card p {
+            color: #64748b;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .demo-background-light {
+            background: #f8fafc;
+        }
+
+        .demo-background-dark {
+            background: #1e293b;
+            color: white;
+        }
+
+        .demo-background-image {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .mock-website {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-top: 30px;
+        }
+
+        .mock-nav {
+            background: #1e293b;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .mock-nav h2 {
+            font-size: 24px;
+        }
+
+        .mock-nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        .mock-content {
+            padding: 60px 40px;
+            min-height: 500px;
+            position: relative;
+        }
+
+        .mock-content h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #1e293b;
+        }
+
+        .mock-content p {
+            font-size: 16px;
+            color: #64748b;
+            line-height: 1.8;
+            max-width: 800px;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+
+        .info-box strong {
+            color: #1976d2;
+        }
+
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 13px;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        .btn-demo {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-demo:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+        }
+
+        .position-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #667eea;
+            color: white;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎨 Chatbot Widget Prototype</h1>
+        <p>Visual preview of how the chatbot widget will appear on Exotic Estates website</p>
+    </div>
+
+    <div class="container">
+        <!-- Widget Button Styles -->
+        <div class="section">
+            <h2 class="section-title">Widget Button Styles</h2>
+            <p style="margin-bottom: 30px; color: #64748b;">The chatbot button appears as a floating element in the bottom-right corner (default). Here are different style variations:</p>
+            
+            <div class="demo-grid">
+                <div class="demo-card demo-background-light">
+                    <h3>Default Style</h3>
+                    <p>Standard button with icon and text</p>
+                    <div style="position: absolute; bottom: 20px; right: 20px;">
+                        <button class="btn-demo">
+                            <span>💬</span>
+                            <span>Chat with us</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="demo-card demo-background-dark">
+                    <h3 style="color: white;">Dark Background</h3>
+                    <p style="color: #94a3b8;">Button visibility on dark backgrounds</p>
+                    <div style="position: absolute; bottom: 20px; right: 20px;">
+                        <button class="btn-demo">
+                            <span>💬</span>
+                            <span>Chat with us</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="demo-card demo-background-image">
+                    <h3 style="color: white;">Image/Gradient Background</h3>
+                    <p style="color: rgba(255,255,255,0.9);">Button on colorful backgrounds</p>
+                    <div style="position: absolute; bottom: 20px; right: 20px;">
+                        <button class="btn-demo">
+                            <span>💬</span>
+                            <span>Chat with us</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Position Options -->
+        <div class="section">
+            <h2 class="section-title">Position Options</h2>
+            <p style="margin-bottom: 30px; color: #64748b;">The widget can be positioned in any corner of the screen:</p>
+            
+            <div class="demo-card" style="min-height: 500px; position: relative;">
+                <h3>All Position Options</h3>
+                <p>Click the buttons to see different positions</p>
+                
+                <!-- Position buttons -->
+                <div style="margin: 20px 0;">
+                    <button onclick="changePosition('bottom-right')" class="btn-demo" style="margin: 5px;">Bottom Right</button>
+                    <button onclick="changePosition('bottom-left')" class="btn-demo" style="margin: 5px;">Bottom Left</button>
+                    <button onclick="changePosition('top-right')" class="btn-demo" style="margin: 5px;">Top Right</button>
+                    <button onclick="changePosition('top-left')" class="btn-demo" style="margin: 5px;">Top Left</button>
+                </div>
+
+                <!-- Widget button (will be positioned dynamically) -->
+                <div id="widgetButton" style="position: absolute; bottom: 20px; right: 20px;">
+                    <button class="btn-demo">
+                        <span>💬</span>
+                        <span>Chat with us</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mock Website Preview -->
+        <div class="section">
+            <h2 class="section-title">Live Preview on Mock Website</h2>
+            <p style="margin-bottom: 20px; color: #64748b;">See how the widget looks on an actual website layout:</p>
+            
+            <div class="mock-website">
+                <div class="mock-nav">
+                    <h2>Exotic Estates</h2>
+                    <ul>
+                        <li>Destinations</li>
+                        <li>Properties</li>
+                        <li>Guides</li>
+                        <li>About</li>
+                        <li>Contact</li>
+                    </ul>
+                </div>
+                <div class="mock-content">
+                    <h2>Luxury Villa Rentals</h2>
+                    <p>
+                        Discover the world's most exclusive vacation rentals. From beachfront villas in Hawaii to 
+                        mountain retreats in Colorado, Exotic Estates offers unparalleled luxury experiences.
+                    </p>
+                    <p style="margin-top: 20px;">
+                        Browse our collection of premium properties in destinations like Maui, Cabo, Vail, and more. 
+                        Each villa is carefully selected to provide the ultimate in comfort, style, and service.
+                    </p>
+                    
+                    <!-- Widget will appear here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Integration Code -->
+        <div class="section">
+            <h2 class="section-title">Integration Code</h2>
+            
+            <div class="info-box">
+                <strong>📋 Simple Integration:</strong> Just add this single script tag to any page on your website.
+            </div>
+
+            <div class="code-block">
+&lt;!-- Add this before closing &lt;/body&gt; tag --&gt;
+&lt;script src="http://your-server.com/public/chatbot-widget.js"
+        data-api-url="http://your-server.com/api"
+        data-config='{"theme": "light", "position": "bottom-right"}'&gt;&lt;/script&gt;
+            </div>
+
+            <h3 style="margin: 30px 0 15px 0;">Configuration Options:</h3>
+            <div class="code-block">
+{
+  "theme": "light",              // "light" or "dark"
+  "position": "bottom-right",    // "bottom-right", "bottom-left", "top-right", "top-left"
+  "primaryColor": "#667eea",     // Button color
+  "buttonText": "Chat with us",  // Button text
+  "buttonIcon": "💬",            // Button icon/emoji
+  "enableContextAwareness": true // Enable page context scraping
+}
+            </div>
+        </div>
+
+        <!-- Features -->
+        <div class="section">
+            <h2 class="section-title">Widget Features</h2>
+            
+            <div class="demo-grid">
+                <div class="demo-card">
+                    <h3>✨ Professional Design</h3>
+                    <p>Modern, clean interface that matches your brand</p>
+                </div>
+                <div class="demo-card">
+                    <h3>📱 Responsive</h3>
+                    <p>Works perfectly on desktop, tablet, and mobile devices</p>
+                </div>
+                <div class="demo-card">
+                    <h3>🧠 Context-Aware</h3>
+                    <p>Automatically understands what page the user is viewing</p>
+                </div>
+                <div class="demo-card">
+                    <h3>💬 Smart Conversations</h3>
+                    <p>Remembers conversation history across page navigations</p>
+                </div>
+                <div class="demo-card">
+                    <h3>⚡ Fast & Lightweight</h3>
+                    <p>Minimal impact on page load time</p>
+                </div>
+                <div class="demo-card">
+                    <h3>🎨 Customizable</h3>
+                    <p>Easy to customize colors, position, and text</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Live Demo -->
+        <div class="section">
+            <h2 class="section-title">Live Interactive Demo</h2>
+            <p style="margin-bottom: 20px; color: #64748b;">Click the button below to see the actual chatbot widget in action:</p>
+            
+            <div class="info-box">
+                <strong>🚀 Try it now:</strong> The chatbot widget is loaded on this page. Look for the chat button in the bottom-right corner!
+            </div>
+        </div>
+    </div>
+
+    <!-- Actual Chatbot Widget -->
+    <script src="http://localhost:3002/public/chatbot-widget.js"
+            data-api-url="http://localhost:3002/api"
+            data-config='{"theme": "light", "position": "bottom-right", "primaryColor": "#667eea"}'></script>
+
+    <script>
+        function changePosition(position) {
+            const widgetButton = document.getElementById('widgetButton');
+            const positions = {
+                'bottom-right': { bottom: '20px', right: '20px', top: 'auto', left: 'auto' },
+                'bottom-left': { bottom: '20px', left: '20px', top: 'auto', right: 'auto' },
+                'top-right': { top: '20px', right: '20px', bottom: 'auto', left: 'auto' },
+                'top-left': { top: '20px', left: '20px', bottom: 'auto', right: 'auto' }
+            };
+            
+            const pos = positions[position];
+            Object.assign(widgetButton.style, pos);
+        }
+
+        // Show current position
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Widget Prototype Page Loaded');
+            console.log('Look for the chatbot widget button in the bottom-right corner!');
+        });
+    </script>
+</body>
+</html>
+

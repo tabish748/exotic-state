@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Script Tag - Exotic Estates Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 13px;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+        .info {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        h1 {
+            color: #1e293b;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test Script Tag</h1>
+    
+    <div class="info">
+        <strong>For Local Testing:</strong> This page tests the script tag that will be sent to the client.
+        Make sure your server is running on port 3002 (or update the URL below).
+    </div>
+
+    <h2>Script Tag Being Tested:</h2>
+    <div class="code-block">
+&lt;script src="http://localhost:3002/public/chatbot-widget.js"
+        data-api-url="http://localhost:3002/api"
+        data-config='{"theme": "light", "position": "bottom-right"}'&gt;&lt;/script&gt;
+    </div>
+
+    <p><strong>Instructions:</strong></p>
+    <ol>
+        <li>Make sure your server is running: <code>npm start</code> (on port 3002)</li>
+        <li>Look for the chat button in the bottom-right corner</li>
+        <li>Click it and test the chatbot</li>
+        <li>If it works, you're ready to deploy to AWS!</li>
+    </ol>
+
+    <p><strong>After AWS Deployment:</strong> Replace <code>localhost:3002</code> with your AWS URL in the script tag above.</p>
+
+    <!-- ACTUAL SCRIPT TAG FOR TESTING -->
+    <script src="http://localhost:3002/public/chatbot-widget.js"
+            data-api-url="http://localhost:3002/api"
+            data-config='{"theme": "light", "position": "bottom-right"}'></script>
+</body>
+</html>
+

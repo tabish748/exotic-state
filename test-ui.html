@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exotic Estates Chatbot - Test UI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .header p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+        
+        .status-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .status-card h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-indicator.online {
+            background: #10b981;
+            box-shadow: 0 0 8px #10b981;
+        }
+        
+        .status-indicator.offline {
+            background: #ef4444;
+        }
+        
+        .test-section {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .test-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        
+        .test-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .test-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .test-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        .test-btn:active {
+            transform: translateY(0);
+        }
+        
+        .api-test {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .api-test h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .input-group input,
+        .input-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+        
+        .input-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .input-group input:focus,
+        .input-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .response-box {
+            background: #1a1a1a;
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        
+        .info-box strong {
+            color: #1976d2;
+        }
+        
+        .instructions {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        
+        .instructions h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        
+        .instructions ol {
+            margin-left: 20px;
+            color: #856404;
+        }
+        
+        .instructions li {
+            margin-bottom: 8px;
+        }
+        
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #d63384;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏖️ Exotic Estates Chatbot</h1>
+            <p>Professional AI Chatbot Testing Interface</p>
+        </div>
+
+        <div class="instructions">
+            <h3>📋 Quick Start Instructions</h3>
+            <ol>
+                <li>Make sure the server is running: <code>npm start</code></li>
+                <li>Check the server status below (should show "Online")</li>
+                <li>Scroll down to see the chatbot widget in the bottom-right corner</li>
+                <li>Click the chat button to start testing!</li>
+                <li>Or use the API test section below to test directly</li>
+            </ol>
+        </div>
+
+        <div class="status-card">
+            <h2>🔌 Server Status</h2>
+            <p>
+                <span class="status-indicator" id="statusIndicator"></span>
+                <span id="statusText">Checking...</span>
+            </p>
+            <div id="serverInfo" style="margin-top: 15px; color: #666;"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>🧪 Quick API Tests</h2>
+            <div class="test-buttons">
+                <button class="test-btn" onclick="testHealth()">Test Health</button>
+                <button class="test-btn" onclick="testStats()">Get Stats</button>
+                <button class="test-btn" onclick="testContext()">Test Scraping</button>
+                <button class="test-btn" onclick="testChat()">Test Chat</button>
+            </div>
+
+            <div class="api-test">
+                <h3>💬 Custom Chat Test</h3>
+                <div class="input-group">
+                    <label>Your Message:</label>
+                    <textarea id="chatMessage" placeholder="Type your message here...">What properties are available in Maui?</textarea>
+                </div>
+                <div class="input-group">
+                    <label>Page URL (optional, for context):</label>
+                    <input type="text" id="pageUrl" placeholder="https://www.exoticestates.com/destinations/hawaii/maui" value="https://www.exoticestates.com/destinations/hawaii/maui">
+                </div>
+                <button class="test-btn" onclick="sendCustomChat()" style="width: 100%;">Send Message</button>
+                <div id="chatResponse" class="response-box" style="display: none;"></div>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <strong>💡 Tip:</strong> The chatbot widget appears in the bottom-right corner. Click it to start chatting! The widget automatically detects the current page context.
+        </div>
+    </div>
+
+    <!-- Chatbot Widget -->
+    <script src="http://localhost:3000/public/chatbot-widget.js"
+            data-api-url="http://localhost:3000/api"
+            data-config='{"theme": "light", "position": "bottom-right", "primaryColor": "#667eea"}'></script>
+
+    <script>
+        const API_URL = 'http://localhost:3000/api';
+        
+        // Check server status on load
+        window.addEventListener('load', () => {
+            checkServerStatus();
+        });
+
+        async function checkServerStatus() {
+            const indicator = document.getElementById('statusIndicator');
+            const statusText = document.getElementById('statusText');
+            const serverInfo = document.getElementById('serverInfo');
+            
+            try {
+                const response = await fetch('http://localhost:3000/health');
+                const data = await response.json();
+                
+                indicator.className = 'status-indicator online';
+                statusText.textContent = 'Server Online ✓';
+                serverInfo.innerHTML = `
+                    <strong>Server Info:</strong><br>
+                    Status: ${data.status}<br>
+                    Timestamp: ${new Date(data.timestamp).toLocaleString()}
+                `;
+            } catch (error) {
+                indicator.className = 'status-indicator offline';
+                statusText.textContent = 'Server Offline ✗';
+                serverInfo.innerHTML = `
+                    <strong>Error:</strong> ${error.message}<br>
+                    Make sure the server is running on port 3000
+                `;
+            }
+        }
+
+        async function testHealth() {
+            try {
+                const response = await fetch(`${API_URL}/chat/health`, { method: 'POST' });
+                const data = await response.json();
+                showResponse('Health Check', data);
+            } catch (error) {
+                showError('Health Check', error);
+            }
+        }
+
+        async function testStats() {
+            try {
+                const response = await fetch(`${API_URL}/chat/stats`);
+                const data = await response.json();
+                showResponse('Stats', data);
+            } catch (error) {
+                showError('Stats', error);
+            }
+        }
+
+        async function testContext() {
+            const url = 'https://www.exoticestates.com/destinations/hawaii/maui';
+            try {
+                const response = await fetch(`${API_URL}/chat/context?url=${encodeURIComponent(url)}`);
+                const data = await response.json();
+                showResponse('Page Context (Scraping)', data);
+            } catch (error) {
+                showError('Context', error);
+            }
+        }
+
+        async function testChat() {
+            try {
+                const response = await fetch(`${API_URL}/chat`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: 'Hello! What properties are available in Maui?',
+                        pageUrl: 'https://www.exoticestates.com/destinations/hawaii/maui'
+                    })
+                });
+                const data = await response.json();
+                showResponse('Chat Response', data);
+            } catch (error) {
+                showError('Chat', error);
+            }
+        }
+
+        async function sendCustomChat() {
+            const message = document.getElementById('chatMessage').value;
+            const pageUrl = document.getElementById('pageUrl').value;
+            const responseBox = document.getElementById('chatResponse');
+            
+            if (!message.trim()) {
+                alert('Please enter a message');
+                return;
+            }
+
+            responseBox.style.display = 'block';
+            responseBox.textContent = 'Sending...';
+
+            try {
+                const response = await fetch(`${API_URL}/chat`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: message,
+                        pageUrl: pageUrl || null
+                    })
+                });
+                const data = await response.json();
+                responseBox.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                responseBox.textContent = `Error: ${error.message}`;
+            }
+        }
+
+        function showResponse(title, data) {
+            alert(`${title}:\n\n${JSON.stringify(data, null, 2)}`);
+        }
+
+        function showError(title, error) {
+            alert(`${title} Error:\n\n${error.message}`);
+        }
+
+        // Auto-refresh status every 10 seconds
+        setInterval(checkServerStatus, 10000);
+    </script>
+</body>
+</html>
+
