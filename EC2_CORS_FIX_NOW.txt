@@ -1,0 +1,43 @@
+═══════════════════════════════════════════════════════════════
+🚨 EC2 CORS FIX - Copy & Paste These Commands
+═══════════════════════════════════════════════════════════════
+
+1. SSH into EC2:
+   ssh ec2-user@16.16.128.91
+
+2. Go to project:
+   cd ~/exotic-state
+
+3. Edit server/index.js:
+   nano server/index.js
+
+4. Find this section (around line 30-35):
+   ```
+   // CORS configuration
+   app.use(cors({
+     origin: (origin, callback) => {
+       // Allow requests with no origin (mobile apps, Postman, etc.)
+       if (!origin) return callback(null, true);
+   ```
+
+5. ADD these 3 lines RIGHT AFTER "if (!origin) return callback(null, true);":
+   ```
+       // Allow file:// protocol for local testing
+       if (origin.startsWith('file://') || origin === 'null') {
+         return callback(null, true);
+       }
+   ```
+
+6. Save: Press Ctrl+X, then Y, then Enter
+
+7. Restart:
+   pm2 restart exotic-state
+   pm2 save
+
+8. Check logs:
+   pm2 logs exotic-state --lines 20
+
+═══════════════════════════════════════════════════════════════
+✅ DONE! Now test-widget-local.html will work!
+═══════════════════════════════════════════════════════════════
+

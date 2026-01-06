@@ -1,0 +1,97 @@
+═══════════════════════════════════════════════════════════════
+  EXOTIC ESTATES CHATBOT - CLIENT SCRIPT TAG
+  SERVER: http://16.16.128.91:3001
+═══════════════════════════════════════════════════════════════
+
+INSTRUCTIONS FOR CLIENT:
+------------------------
+Add this script tag to any page on your website, just before 
+the closing </body> tag.
+
+═══════════════════════════════════════════════════════════════
+
+SCRIPT TAG FOR CLIENT:
+----------------------
+
+<script src="http://16.16.128.91:3001/public/chatbot-widget.js"
+        data-api-url="http://16.16.128.91:3001/api"
+        data-config='{"theme": "light", "position": "bottom-right"}'></script>
+
+═══════════════════════════════════════════════════════════════
+
+IMPORTANT NOTES:
+----------------
+
+1. CORS Configuration:
+   Make sure the client's domain is added to ALLOWED_ORIGINS
+   on the server. Update the .env file on EC2:
+   
+   ALLOWED_ORIGINS=https://www.exoticestates.com,https://exoticestates.com
+
+2. HTTPS (Recommended for Production):
+   For production, you should set up HTTPS/SSL. Options:
+   - Use Nginx reverse proxy with Let's Encrypt SSL
+   - Use AWS Application Load Balancer with SSL certificate
+   - Or use CloudFlare for SSL termination
+
+3. Domain Name (Optional but Recommended):
+   Instead of IP address, set up a domain name:
+   - Point domain to EC2 IP: 16.16.128.91
+   - Update script tag to use domain name
+   - Example: chatbot.exoticestates.com
+
+═══════════════════════════════════════════════════════════════
+
+CUSTOMIZATION OPTIONS:
+----------------------
+
+You can customize the chatbot:
+
+<script src="http://16.16.128.91:3001/public/chatbot-widget.js"
+        data-api-url="http://16.16.128.91:3001/api"
+        data-config='{
+          "theme": "light",                    // "light" or "dark"
+          "position": "bottom-right",          // "bottom-right", "bottom-left", "top-right", "top-left"
+          "primaryColor": "#1a1a1a",          // Button color (hex code)
+          "buttonText": "Chat with us",        // Button text
+          "buttonIcon": "💬"                   // Button icon/emoji
+        }'></script>
+
+═══════════════════════════════════════════════════════════════
+
+TESTING:
+--------
+
+Before sending to client, test:
+
+1. Health Check:
+   curl http://16.16.128.91:3001/health
+
+2. Widget Script:
+   curl http://16.16.128.91:3001/public/chatbot-widget.js
+
+3. API Test:
+   curl -X POST http://16.16.128.91:3001/api/chat/chat \
+     -H "Content-Type: application/json" \
+     -d '{"message":"Hello"}'
+
+4. Test on Client's Website:
+   - Add script tag to a test page
+   - Open in browser
+   - Check console (F12) for errors
+   - Test chat functionality
+
+═══════════════════════════════════════════════════════════════
+
+NEXT STEPS FOR PRODUCTION:
+--------------------------
+
+1. Set up Nginx reverse proxy (recommended)
+2. Configure SSL/HTTPS with Let's Encrypt
+3. Set up domain name (optional)
+4. Configure firewall/security groups
+5. Set up monitoring and logging
+6. Configure auto-restart on server reboot
+
+═══════════════════════════════════════════════════════════════
+

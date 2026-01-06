@@ -29,8 +29,13 @@ app.use(compression());
 // CORS configuration
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow requests with no origin (mobile apps, Postman, etc.)
+    // Allow requests with no origin (mobile apps, Postman, file://, etc.)
     if (!origin) return callback(null, true);
+    
+    // Allow file:// protocol for local testing
+    if (origin.startsWith('file://') || origin === 'null') {
+      return callback(null, true);
+    }
     
     if (config.cors.allowedOrigins.includes(origin) || config.server.isDevelopment) {
       callback(null, true);
