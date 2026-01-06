@@ -90,6 +90,16 @@ app.get('/prototype', (req, res) => {
   res.sendFile(join(__dirname, '../widget-prototype.html'));
 });
 
+// Serve test-widget.html
+app.get('/test-widget.html', (req, res) => {
+  res.sendFile(join(__dirname, '../test-widget.html'));
+});
+
+// Serve test-widget-local.html
+app.get('/test-widget-local.html', (req, res) => {
+  res.sendFile(join(__dirname, '../test-widget-local.html'));
+});
+
 // Root endpoint
 app.get('/', (req, res) => {
   res.json({
