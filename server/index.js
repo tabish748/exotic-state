@@ -26,34 +26,50 @@ app.use(helmet({
 // Compression middleware
 app.use(compression());
 
-// CORS configuration
+// CORS configuration with detailed logging
 app.use(cors({
   origin: (origin, callback) => {
+    console.log('\n🔐 [CORS] Checking origin...');
+    console.log(`  📍 Received origin: ${origin || 'null/undefined'}`);
+    console.log(`  📋 Type: ${typeof origin}`);
+    console.log(`  📏 Length: ${origin ? origin.length : 0}`);
+    
     // Allow requests with no origin (mobile apps, Postman, file://, etc.)
     if (!origin) {
-      console.log('[CORS] Allowing request with no origin');
+      console.log('  ✅ [CORS] Allowing request with no origin');
       return callback(null, true);
     }
     
-    // Log origin for debugging
-    console.log('[CORS] Request origin:', origin);
+    // Check for file:// protocol variations
+    const isFileProtocol = 
+      origin.startsWith('file://') || 
+      origin === 'null' || 
+      origin === 'file:///' ||
+      origin.includes('file:///') ||
+      origin.includes('/Users') || // macOS file paths
+      (origin.startsWith('/') && !origin.startsWith('http')); // Local file paths
     
-    // Allow file:// protocol for local testing (all variations)
-    if (origin.startsWith('file://') || 
-        origin === 'null' || 
-        origin === 'file://' ||
-        origin.includes('file://') ||
-        origin.startsWith('/Users') || // macOS file paths
-        origin.startsWith('/') && !origin.startsWith('http')) { // Local file paths
-      console.log('[CORS] Allowing file:// or local file origin');
+    if (isFileProtocol) {
+      console.log(`  ✅ [CORS] Allowing file:// or local file origin: ${origin}`);
+      console.log(`  🔍 Matched pattern: ${origin.startsWith('file://') ? 'file://' : origin.includes('/Users') ? '/Users path' : 'local path'}`);
       return callback(null, true);
     }
     
-    if (config.cors.allowedOrigins.includes(origin) || config.server.isDevelopment) {
+    // Check allowed origins
+    const isAllowedOrigin = config.cors.allowedOrigins.includes(origin);
+    const isDevelopment = config.server.isDevelopment;
+    
+    console.log(`  📋 Allowed origins: ${config.cors.allowedOrigins.join(', ')}`);
+    console.log(`  ✅ Is in allowed list: ${isAllowedOrigin}`);
+    console.log(`  🛠️  Is development: ${isDevelopment}`);
+    
+    if (isAllowedOrigin || isDevelopment) {
+      console.log(`  ✅ [CORS] Allowing origin: ${origin}`);
       callback(null, true);
     } else {
-      console.log('[CORS] Blocking origin:', origin);
-      callback(new Error('Not allowed by CORS'));
+      console.log(`  ❌ [CORS] BLOCKING origin: ${origin}`);
+      console.log(`  💡 Add to ALLOWED_ORIGINS in .env or enable development mode`);
+      callback(new Error(`Not allowed by CORS: ${origin}`));
     }
   },
   credentials: true,
@@ -76,17 +92,60 @@ const limiter = rateLimit({
 
 app.use('/api/', limiter);
 
-// Request logging middleware
+// Request logging middleware - Enhanced for debugging
 app.use((req, res, next) => {
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
+  const timestamp = new Date().toISOString();
+  const origin = req.headers.origin || 'no-origin';
+  const referer = req.headers.referer || 'no-referer';
+  const userAgent = req.headers['user-agent'] || 'no-user-agent';
+  const isPreflight = req.method === 'OPTIONS';
+  
+  if (isPreflight) {
+    console.log(`\n🔄 [PREFLIGHT] ${req.method} ${req.path}`);
+  } else {
+    console.log(`\n[${timestamp}] ${req.method} ${req.path}`);
+  }
+  
+  console.log(`  📍 Origin: ${origin}`);
+  console.log(`  🔗 Referer: ${referer}`);
+  console.log(`  🌐 User-Agent: ${userAgent.substring(0, 50)}...`);
+  console.log(`  📋 Headers:`, {
+    origin: req.headers.origin,
+    referer: req.headers.referer,
+    'content-type': req.headers['content-type'],
+    'access-control-request-method': req.headers['access-control-request-method'],
+    'access-control-request-headers': req.headers['access-control-request-headers'],
+  });
+  
+  // Log response headers for CORS
+  res.on('finish', () => {
+    console.log(`  ✅ [RESPONSE] Status: ${res.statusCode}`);
+    console.log(`  📋 Response headers:`, {
+      'access-control-allow-origin': res.getHeader('access-control-allow-origin'),
+      'access-control-allow-methods': res.getHeader('access-control-allow-methods'),
+      'access-control-allow-headers': res.getHeader('access-control-allow-headers'),
+    });
+  });
+  
   next();
 });
 
 // API Routes
 app.use('/api/chat', chatRoutes);
 
-// Serve static files (chatbot widget)
-app.use('/public', express.static(join(__dirname, '../public')));
+// Serve static files (chatbot widget) with logging
+app.use('/public', (req, res, next) => {
+  console.log(`📦 [STATIC] Serving file: ${req.path}`);
+  console.log(`  📍 Origin: ${req.headers.origin || 'no-origin'}`);
+  next();
+}, express.static(join(__dirname, '../public'), {
+  setHeaders: (res, path) => {
+    console.log(`  ✅ [STATIC] Sending file: ${path}`);
+    // Add CORS headers explicitly for static files
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  }
+}));
 
 // Serve demo page
 app.get('/demo', (req, res) => {
@@ -137,20 +196,32 @@ app.get('/health', (req, res) => {
   });
 });
 
-// 404 handler
+// 404 handler with logging
 app.use((req, res) => {
+  console.log(`❌ [404] Endpoint not found: ${req.method} ${req.path}`);
+  console.log(`  📍 Origin: ${req.headers.origin || 'no-origin'}`);
+  console.log(`  🔗 Referer: ${req.headers.referer || 'no-referer'}`);
   res.status(404).json({
     error: 'Endpoint not found',
     path: req.path,
+    method: req.method,
+    origin: req.headers.origin || 'no-origin',
   });
 });
 
-// Error handling middleware
+// Error handling middleware with detailed logging
 app.use((err, req, res, next) => {
-  console.error('[Server] Error:', err);
+  console.error('\n❌ [ERROR] Server error occurred:');
+  console.error(`  📍 Path: ${req.method} ${req.path}`);
+  console.error(`  📍 Origin: ${req.headers.origin || 'no-origin'}`);
+  console.error(`  ❌ Error: ${err.message}`);
+  console.error(`  📋 Stack: ${err.stack}`);
+  console.error(`  🔍 Full error:`, err);
   
   res.status(err.status || 500).json({
     error: err.message || 'Internal server error',
+    path: req.path,
+    method: req.method,
     ...(config.server.isDevelopment && { stack: err.stack }),
   });
 });
