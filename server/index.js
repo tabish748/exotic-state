@@ -134,11 +134,12 @@ app.use((req, res, next) => {
 app.use('/api/chat', chatRoutes);
 
 // Serve static files (chatbot widget) with logging and explicit CORS
+// CRITICAL: 304 responses don't include CORS headers by default, so we need to handle this
 app.use('/public', (req, res, next) => {
   console.log(`📦 [STATIC] Serving file: ${req.path}`);
   console.log(`  📍 Origin: ${req.headers.origin || 'no-origin'}`);
   
-  // Set CORS headers explicitly for static files (allow all origins including file://)
+  // Set CORS headers BEFORE any response (including 304)
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -149,12 +150,45 @@ app.use('/public', (req, res, next) => {
     return res.sendStatus(200);
   }
   
+  // Intercept response methods to ensure CORS headers are ALWAYS included
+  const originalSend = res.send;
+  const originalEnd = res.end;
+  const originalWriteHead = res.writeHead;
+  
+  res.send = function(data) {
+    this.setHeader('Access-Control-Allow-Origin', '*');
+    return originalSend.call(this, data);
+  };
+  
+  res.end = function(data) {
+    this.setHeader('Access-Control-Allow-Origin', '*');
+    return originalEnd.call(this, data);
+  };
+  
+  res.writeHead = function(statusCode, statusMessage, headers) {
+    if (!headers) headers = statusMessage;
+    if (headers && typeof headers === 'object') {
+      headers['Access-Control-Allow-Origin'] = '*';
+    }
+    return originalWriteHead.call(this, statusCode, statusMessage, headers);
+  };
+  
   next();
 }, express.static(join(__dirname, '../public'), {
-  setHeaders: (res, path) => {
+  setHeaders: (res, path, stat) => {
     console.log(`  ✅ [STATIC] Sending file: ${path}`);
-    // Ensure CORS headers are set
+    // Ensure CORS headers are ALWAYS set, even for 304 responses
     res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    
+    // Disable caching for widget file to avoid 304 issues with CORS
+    if (path.includes('chatbot-widget.js')) {
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader('Expires', '0');
+      res.setHeader('ETag', ''); // Remove ETag to prevent 304
+    }
   }
 }));
 
