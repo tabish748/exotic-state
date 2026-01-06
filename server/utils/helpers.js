@@ -8,17 +8,25 @@
 export function sanitizeUrl(url) {
   if (!url) return null;
   
-  // If URL doesn't start with http, assume it's a path
+  // Allowlist of trusted hosts for scraping (add EC2/local IPs for testing)
+  const allowedHosts = [
+    'www.exoticestates.com',
+    'exoticestates.com',
+    '16.16.128.91',
+    'localhost',
+    '127.0.0.1',
+  ];
+
+  // If URL doesn't start with http, assume it's a path on the primary domain
   if (!url.startsWith('http')) {
-    // Ensure it starts with /
     const path = url.startsWith('/') ? url : `/${url}`;
     return `https://www.exoticestates.com${path}`;
   }
   
-  // Validate it's an exoticestates.com URL
+  // Validate allowed host
   try {
     const urlObj = new URL(url);
-    if (urlObj.hostname.includes('exoticestates.com')) {
+    if (allowedHosts.includes(urlObj.hostname)) {
       return url;
     }
   } catch (error) {
