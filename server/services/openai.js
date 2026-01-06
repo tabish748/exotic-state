@@ -174,10 +174,10 @@ RESPONSE STYLE:
         prompt += `CONTENT INFORMATION:\n`;
         if (pageContext.title) prompt += `- Title: ${pageContext.title}\n`;
         if (pageContext.content.mainText) {
-          prompt += `- Content Summary: ${pageContext.content.mainText.substring(0, 400)}\n`;
+          prompt += `- Content Summary: ${pageContext.content.mainText.substring(0, 1200)}\n`;
         }
         if (pageContext.content.headings && pageContext.content.headings.length > 0) {
-          prompt += `- Key Topics: ${pageContext.content.headings.slice(0, 5).join(', ')}\n`;
+          prompt += `- Key Topics: ${pageContext.content.headings.slice(0, 8).join(', ')}\n`;
         }
         prompt += `\nUse this content to answer questions related to the guide or article the user is reading.\n`;
       }
@@ -186,10 +186,10 @@ RESPONSE STYLE:
       else if (pageContext.content) {
         prompt += `PAGE CONTENT:\n`;
         if (pageContext.content.mainText) {
-          prompt += `${pageContext.content.mainText.substring(0, 500)}\n`;
+          prompt += `${pageContext.content.mainText.substring(0, 2000)}\n`;
         }
         if (pageContext.content.headings && pageContext.content.headings.length > 0) {
-          prompt += `\nKey Topics: ${pageContext.content.headings.slice(0, 5).join(', ')}\n`;
+          prompt += `\nKey Topics: ${pageContext.content.headings.slice(0, 10).join(', ')}\n`;
         }
       }
 
