@@ -25,9 +25,9 @@ export const config = {
   // Server Configuration
   server: {
     port: (() => {
-      const port = parseInt(process.env.PORT) || 8080;
+      const port = parseInt(process.env.PORT) || 3005;
       console.log('  🚀 Server port configured:', port);
-      console.log('  📝 Source:', process.env.PORT ? 'process.env.PORT' : 'default (8080)');
+      console.log('  📝 Source:', process.env.PORT ? 'process.env.PORT' : 'default (3005)');
       return port;
     })(),
     nodeEnv: process.env.NODE_ENV || 'development',

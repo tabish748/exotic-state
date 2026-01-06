@@ -107,8 +107,8 @@
     <!-- CHATBOT WIDGET SCRIPT TAG -->
     <!-- This is what the client will add to their website -->
     <!-- ============================================ -->
-    <script src="http://16.16.128.91:8080/public/chatbot-widget.js"
-            data-api-url="http://16.16.128.91:8080/api"
+    <script src="http://16.16.128.91:3005/public/chatbot-widget.js"
+            data-api-url="http://16.16.128.91:3005/api"
             data-config='{"theme": "light", "position": "bottom-right"}'></script>
 
     <!-- Status Check -->
@@ -156,8 +156,8 @@
         // Check after page loads
         window.addEventListener('load', () => {
             console.log('🧪 Standalone test page loaded');
-            console.log('📡 Widget script URL: http://16.16.128.91:3001/public/chatbot-widget.js');
-            console.log('📡 API URL: http://16.16.128.91:3001/api');
+            console.log('📡 Widget script URL: http://16.16.128.91:3005/public/chatbot-widget.js');
+            console.log('📡 API URL: http://16.16.128.91:3005/api');
             
             // Check multiple times (script might load late)
             setTimeout(checkWidget, 2000);
