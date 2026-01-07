@@ -14,51 +14,71 @@ function detectRequiredPages(message) {
   const messageLower = message.toLowerCase();
   const additionalPages = [];
 
-  // Home page keywords (general overview, destinations, what we offer)
+  // Home page keywords (based on actual content: destinations, special offers, featured properties)
   const homeKeywords = [
     'home', 'main page', 'overview', 'what do you offer', 'destinations', 'all locations',
-    'where do you have', 'what areas', 'all properties', 'show me everything'
+    'where do you have', 'what areas', 'all properties', 'show me everything',
+    'special offers', 'featured', 'vacation rental special', 'find villa', 'search destinations',
+    'popular destinations', 'hawaii', 'colorado', 'caribbean', 'cabo', 'reserve', 'book now'
   ];
 
-  // FAQ-related keywords
+  // FAQ-related keywords (based on actual FAQ content)
   const faqKeywords = [
-    'faq', 'minimum', 'stay', 'night', 'discount', 'month', 'children', 'air conditioning',
-    'question', 'policy', 'allowed', 'equipped', 'photo', 'image',
-    'concierge', 'service', 'property manager', 'extended stay', 'long stay'
+    'faq', 'frequently asked', 'minimum', 'stay', 'night', 'discount', 'month', 'children', 
+    'air conditioning', 'question', 'policy', 'allowed', 'equipped', 'photo', 'image',
+    'concierge', 'service', 'property manager', 'extended stay', 'long stay',
+    'hotel', 'resort', 'vrbo', 'airbnb', 'villa vs', 'surprises', 'inspected',
+    'photos match', 'exact match', 'children allowed', 'ac', 'air conditioning',
+    'contact while staying', 'concierge services', 'new destinations', 'expanding'
   ];
 
-  // About-related keywords
+  // About-related keywords (based on actual About Us content)
   const aboutKeywords = [
     'about', 'company', 'who are you', 'history', 'team', 'exotic estates',
-    'specialist', 'work with', 'help with', 'what do you do', 'since when', 'founded'
+    'specialist', 'work with', 'help with', 'what do you do', 'since when', 'founded',
+    'story', 'company story', 'founded by', 'tyler coons', 'when was', 'established',
+    'why work with', 'vs vrbo', 'vs airbnb', 'no surprises', 'guest experience',
+    'owner', 'value to owners', 'core values', 'delieverable values', 'commitment', 'satisfaction',
+    'vetted', 'inspected', 'quality standards', 'luxury hospitality', 'andaz', 'timbers',
+    'four seasons', 'vrma', 'bbb rating', 'asta', 'green member', 'december 2006',
+    'resort travel', 'vacation rental industries', 'business model', 'luxury vacation experiences'
   ];
 
-  // Contact-related keywords
+  // Contact-related keywords (based on actual Contact page content)
   const contactKeywords = [
     'contact', 'phone', 'email', 'call', 'reach', 'get in touch', 'speak with',
     'talk to', 'consultant', 'travel consultant', 'reservation', 'booking contact',
-    'how to contact', 'where to call', 'phone number', 'email address'
+    'how to contact', 'where to call', 'phone number', 'email address',
+    '888.628.4896', 'personal travel consultant', 'personalized service',
+    'inquire about property', 'bid farewell', 'by your side'
   ];
 
-  // Terms & Conditions keywords
+  // Terms & Conditions keywords (based on actual Terms page content)
   const termsKeywords = [
     'terms', 'conditions', 'terms and conditions', 'booking terms', 'cancellation',
     'refund', 'policy', 'rules', 'agreement', 'contract', 'booking agreement',
-    'cancellation policy', 'refund policy', 'terms of service'
+    'cancellation policy', 'refund policy', 'terms of service', 'general terms',
+    'general policies', 'guidelines', 'rental agreement', 'acceptance', 'payment terms',
+    'proper vacation', 'deposit', 'booking deposit', 'rental policies'
   ];
 
-  // Privacy Policy keywords
+  // Privacy Policy keywords (based on actual Privacy Policy content)
   const privacyKeywords = [
     'privacy', 'privacy policy', 'data', 'information', 'personal information',
     'cookies', 'data collection', 'how you use', 'what you collect', 'gdpr',
-    'data protection', 'information security'
+    'data protection', 'information security', 'personal data', 'collect information',
+    'use information', 'process information', 'disclose information', 'newsletter',
+    'communications', 'third party', 'vendors', 'platform', 'search experience',
+    'manage bookings', 'disseminating information'
   ];
 
-  // Blog keywords
+  // Blog keywords (based on actual Blog page content)
   const blogKeywords = [
     'blog', 'article', 'post', 'guide', 'tips', 'advice', 'travel tips',
     'vacation tips', 'destination guide', 'things to do', 'local guide',
-    'travel blog', 'luxury advisor'
+    'travel blog', 'luxury advisor', 'luxury advisor blog', 'napali coast',
+    'kauai', 'hawaii visitor fees', 'hawaii summer events', 'telluride',
+    'colorado luxury lodging', 'subscribe', 'newsletter', 'always updated'
   ];
 
   // Check if question is about home/overview

@@ -224,9 +224,14 @@ RESPONSE STYLE:
           prompt += `Page Type: ${additionalPage.pageType}\n\n`;
           
           if (additionalPage.content) {
-            // For FAQ or generic pages, include the full main text
+            // For FAQ, About Us, and other important pages, include more content
+            const isImportantPage = additionalPage.url.includes('/about') || 
+                                   additionalPage.url.includes('/faqs') ||
+                                   additionalPage.url.includes('/contact');
+            const maxContentLength = isImportantPage ? 5000 : 3000;
+            
             if (additionalPage.content.mainText) {
-              prompt += `CONTENT:\n${additionalPage.content.mainText.substring(0, 3000)}\n`;
+              prompt += `CONTENT:\n${additionalPage.content.mainText.substring(0, maxContentLength)}\n`;
             }
             
             // Include headings for structure

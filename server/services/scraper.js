@@ -85,7 +85,7 @@ class PageScraper {
         // Extract common content
         context.content = {
           headings: this.extractHeadings($),
-          mainText: this.extractMainText($),
+          mainText: this.extractMainText($, sanitizedUrl),
           keyPoints: this.extractKeyPoints($),
         };
 
@@ -303,17 +303,23 @@ class PageScraper {
   /**
    * Extract main text content
    */
-  extractMainText($) {
+  extractMainText($, url = '') {
     // Remove unwanted elements
     $('script, style, nav, footer, header, .nav, .footer, .header, .sidebar').remove();
     
+    // Increase limit for About Us and other important pages
+    const isImportantPage = url.includes('/about') || url.includes('/contact') || 
+                           url.includes('/faqs') || url.includes('/terms') || 
+                           url.includes('/privacy');
+    const maxLength = isImportantPage ? 5000 : 2000;
+    
     const mainContent = $('main, article, .content, .main-content, .page-content').first();
     if (mainContent.length) {
-      return cleanText(mainContent.text(), 2000);
+      return cleanText(mainContent.text(), maxLength);
     }
     
     // Fallback to body text
-    return cleanText($('body').text(), 2000);
+    return cleanText($('body').text(), maxLength);
   }
 
   /**
