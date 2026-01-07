@@ -1,7 +1,7 @@
 # 📦 Exotic Estates AI Chatbot - Delivery Document
 
-**Project:** Professional AI-Powered Chatbot with Real-Time Page Scraping  
-**Version:** 1.0.0  
+**Project:** Professional AI-Powered Chatbot with Intelligent Multi-Page Context  
+**Version:** 2.0.0  
 **Delivery Date:** December 30, 2024  
 **Status:** ✅ Ready for Production
 
@@ -33,9 +33,10 @@ This document provides complete delivery information for the **Exotic Estates AI
 
 ### Key Highlights
 
-- ✅ **Real-Time Context Awareness** - Automatically understands what page users are viewing
+- ✅ **Intelligent Multi-Page Context** - Automatically scrapes current page + relevant general pages based on questions
+- ✅ **Real-Time Context Awareness** - Understands what page users are viewing
 - ✅ **OpenAI GPT-4 Powered** - Intelligent, natural language responses
-- ✅ **Professional UI/UX** - Modern, responsive chat interface
+- ✅ **Professional UI/UX** - Modern, responsive chat interface with dark/light themes
 - ✅ **Easy Integration** - Single script tag implementation
 - ✅ **Production Ready** - Complete with error handling, caching, and security
 
@@ -131,6 +132,87 @@ The chatbot supports **three different approaches** for obtaining page data:
 
 ---
 
+## 📚 General Pages & Multi-Page Context
+
+The chatbot has **intelligent multi-page context awareness** - it automatically scrapes both the current page AND relevant general pages based on the user's question.
+
+### How It Works
+
+1. **User asks a question** → Bot analyzes keywords in the question
+2. **Bot detects relevant pages** → Automatically identifies which general pages contain the answer
+3. **Bot scrapes multiple pages** → Current page + relevant general pages (in parallel)
+4. **Bot combines contexts** → Uses all scraped information to provide comprehensive answers
+5. **Bot responds naturally** → Answers without citing sources, just like a knowledgeable assistant
+
+### General Pages Available
+
+The chatbot automatically has access to these **7 general pages** and scrapes them when relevant:
+
+| Page | URL | When It's Scraped |
+|------|-----|-------------------|
+| **Home** | `https://www.exoticestates.com/` | Questions about destinations, overview, special offers, featured properties |
+| **About Us** | `https://www.exoticestates.com/about-us` | Questions about company, history, story, team, why choose us, vs VRBO/Airbnb |
+| **Contact** | `https://www.exoticestates.com/contact` | Questions about phone, email, how to contact, speak with consultant |
+| **FAQ** | `https://www.exoticestates.com/faqs` | Questions about minimum stay, discounts, children, air conditioning, policies |
+| **Terms & Conditions** | `https://www.exoticestates.com/terms-and-conditions` | Questions about booking terms, cancellation, refund, payment, policies |
+| **Privacy Policy** | `https://www.exoticestates.com/privacy-policy` | Questions about privacy, data collection, cookies, personal information |
+| **Blog** | `https://www.exoticestates.com/blog` | Questions about travel tips, guides, articles, luxury advisor, destination guides |
+
+### Example Scenarios
+
+**Scenario 1: User asks "Is there a minimum night stay?"**
+- ✅ Bot detects FAQ-related keywords
+- ✅ Bot scrapes: Current page + FAQ page
+- ✅ Bot answers using FAQ content: "Minimum stays start from as little as 5 nights"
+
+**Scenario 2: User asks "What's your phone number?"**
+- ✅ Bot detects contact-related keywords
+- ✅ Bot scrapes: Current page + Contact page
+- ✅ Bot answers: "You can reach us at 888.628.4896"
+
+**Scenario 3: User asks "Tell me about the company story"**
+- ✅ Bot detects about-related keywords
+- ✅ Bot scrapes: Current page + About Us page
+- ✅ Bot answers: "Exotic Estates International was founded in December 2006 by Tyler Coons..."
+
+**Scenario 4: User asks "What are your cancellation terms?"**
+- ✅ Bot detects terms-related keywords
+- ✅ Bot scrapes: Current page + Terms & Conditions page
+- ✅ Bot answers using terms content
+
+### Keyword Detection
+
+The bot uses intelligent keyword matching to determine which pages to scrape:
+
+- **Home Page:** `destinations`, `special offers`, `featured`, `find villa`, `search`, `hawaii`, `colorado`, `caribbean`
+- **About Us:** `about`, `company`, `story`, `history`, `founded`, `tyler coons`, `vs vrbo`, `vs airbnb`, `team`
+- **Contact:** `contact`, `phone`, `email`, `call`, `888.628.4896`, `consultant`, `get in touch`
+- **FAQ:** `faq`, `minimum`, `stay`, `night`, `discount`, `children`, `air conditioning`, `concierge`
+- **Terms:** `terms`, `conditions`, `cancellation`, `refund`, `payment`, `booking terms`, `policy`
+- **Privacy:** `privacy`, `data`, `information`, `cookies`, `personal information`, `data collection`
+- **Blog:** `blog`, `article`, `guide`, `tips`, `travel tips`, `luxury advisor`, `destination guide`
+
+### Content Extraction
+
+- **Important Pages (About, FAQ, Contact, Terms, Privacy):** Extracts up to **5,000 characters** of content
+- **Other Pages:** Extracts up to **2,000 characters** of content
+- **Headings & Key Points:** Extracted for better context understanding
+
+### Professional Responses
+
+The bot **never says**:
+- ❌ "This information is not available on this page"
+- ❌ "Not on this page"
+- ❌ "This information was found in..."
+
+Instead, the bot:
+- ✅ Answers naturally and professionally
+- ✅ Uses information from all relevant pages
+- ✅ Offers to connect with support (888.628.4896 or info@exoticestates.com) when specific details aren't available
+- ✅ Responds as if it naturally knows the information
+
+---
+
 ## 📊 Project Overview
 
 ### What Was Built
@@ -184,19 +266,29 @@ exotic-state-chat-bot/
 
 ### Core Features
 
-1. **Real-Time Page Scraping**
-   - Automatically detects page type (property, destination, guide, blog)
+1. **Intelligent Multi-Page Context Scraping**
+   - Automatically scrapes current page + relevant general pages based on question keywords
+   - Detects which general pages (Home, About, Contact, FAQ, Terms, Privacy, Blog) to scrape
+   - Scrapes multiple pages in parallel for faster responses
+   - Extracts up to 5,000 characters from important pages (About, FAQ, Contact, Terms, Privacy)
+   - Extracts up to 2,000 characters from other pages
+   - Intelligent keyword matching for page detection
+
+2. **Real-Time Page Scraping**
+   - Automatically detects page type (property, destination, guide, blog, static)
    - Extracts relevant content, metadata, and structured data
    - Handles different page layouts gracefully
-   - Error handling and retry logic
+   - Error handling and retry logic (3 attempts with exponential backoff)
 
-2. **Context-Aware Responses**
-   - Understands current page context
-   - Provides relevant, accurate answers
+3. **Context-Aware Responses**
+   - Understands current page context + general pages context
+   - Provides relevant, accurate answers using combined information
    - References specific properties, destinations, or content
+   - Answers naturally without citing sources
+   - Offers professional support referral when specific details aren't available
    - Maintains context across conversation
 
-3. **Conversation Management**
+4. **Conversation Management**
    - Persistent conversations across page navigations
    - Remembers previous messages
    - Updates context when navigating to new pages
@@ -235,17 +327,43 @@ Scrape Current Page (Real-Time)
     ↓
 Extract Context (Page Type, Content, Metadata)
     ↓
-Build Context Object
-    ↓
 User Sends Message
     ↓
-Include Context in OpenAI Request
+Analyze Message Keywords
     ↓
-Generate AI Response
+Detect Relevant General Pages (Home, About, FAQ, Contact, Terms, Privacy, Blog)
     ↓
-Display Response to User
+Scrape Relevant General Pages (in parallel)
+    ↓
+Combine All Contexts (Current Page + General Pages)
+    ↓
+Build Comprehensive Context Object
+    ↓
+Include Combined Context in OpenAI Request
+    ↓
+Generate AI Response (using all available information)
+    ↓
+Display Response to User (naturally, without citing sources)
     ↓
 Store Conversation (localStorage)
+```
+
+### Multi-Page Context Flow
+
+```
+User Question: "Is there a minimum night stay?"
+    ↓
+Keyword Detection: ["minimum", "stay", "night"] → FAQ page detected
+    ↓
+Parallel Scraping:
+    - Current Page: http://www.exoticestates.com/maui
+    - FAQ Page: https://www.exoticestates.com/faqs
+    ↓
+Context Combination:
+    - Current Page Context: Maui destination info
+    - FAQ Context: "Minimum stays start from as little as 5 nights"
+    ↓
+AI Response: "Minimum stays start from as little as 5 nights, depending on the season and property availability."
 ```
 
 ### Components
@@ -346,15 +464,61 @@ curl http://localhost:3000/health
 
 ## 🔌 Integration Guide
 
-### Simple Integration (Recommended)
+### Quick Start - Single Script Tag (Recommended)
 
-Add this single script tag before the closing `</body>` tag on any page:
+The chatbot can be integrated with a **single line of code**. Add this script tag before the closing `</body>` tag on any page where you want the chatbot to appear:
 
 ```html
 <script src="http://your-server.com/public/chatbot-widget.js"
         data-api-url="http://your-server.com/api"
         data-config='{"theme": "light", "position": "bottom-right"}'></script>
 ```
+
+**Replace `your-server.com` with your actual server URL** (e.g., `http://16.16.128.91:3005` for EC2 or your production domain).
+
+### Configuration Options
+
+The `data-config` attribute accepts a JSON object with the following options:
+
+```javascript
+{
+  "theme": "light",              // "light" or "dark"
+  "position": "bottom-right",     // "bottom-right", "bottom-left", "top-right", "top-left"
+  "primaryColor": "#1a1a1a",      // Button and accent color (hex code)
+  "buttonText": "Chat with us",   // Button text (optional)
+  "buttonIcon": "💬",            // Button icon/emoji (optional)
+  "greetingMessage": "Hello! I'm here to help you find the perfect luxury villa for your vacation. What are you looking for?"  // Initial greeting (optional)
+}
+```
+
+### Example: Full Integration
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Exotic Estates - Luxury Villa Rentals</title>
+</head>
+<body>
+    <!-- Your website content here -->
+    
+    <!-- Chatbot Widget - Add before closing </body> tag -->
+    <script src="http://your-server.com/public/chatbot-widget.js"
+            data-api-url="http://your-server.com/api"
+            data-config='{"theme": "light", "position": "bottom-right"}'></script>
+</body>
+</html>
+```
+
+### Integration on All Pages
+
+To add the chatbot to **all pages** of your website:
+
+1. **If using a template/layout system:** Add the script tag to your main layout/template file
+2. **If using a CMS:** Add the script tag to the global footer or header template
+3. **If using WordPress:** Add to `footer.php` or use a plugin
+4. **If using a static site:** Add to a shared include file or copy to each page
 
 ### Vue.js Integration
 
@@ -517,9 +681,18 @@ Send a chat message and get AI response.
     "pageType": "destination",
     "title": "Maui Vacation Rentals"
   },
+  "additionalContext": [
+    {
+      "url": "https://www.exoticestates.com/faqs",
+      "title": "FAQ - Exotic Estates",
+      "pageType": "other"
+    }
+  ],
   "timestamp": "2024-12-30T18:46:09.392Z"
 }
 ```
+
+**Note:** The `additionalContext` array contains information about general pages that were automatically scraped based on the question keywords. This allows the bot to provide comprehensive answers using information from multiple pages.
 
 #### GET `/api/chat/context?url=<page-url>`
 
@@ -825,7 +998,36 @@ All components have been developed, tested, and documented. The chatbot is ready
 
 ---
 
-**Document Version:** 1.0.0  
+**Document Version:** 2.0.0  
 **Last Updated:** December 30, 2024  
 **Prepared by:** Development Team
+
+---
+
+## 🆕 What's New in Version 2.0
+
+### Intelligent Multi-Page Context
+- ✅ Automatic detection and scraping of 7 general pages (Home, About, Contact, FAQ, Terms, Privacy, Blog)
+- ✅ Intelligent keyword-based page detection
+- ✅ Parallel scraping for faster responses
+- ✅ Enhanced content extraction (up to 5,000 characters for important pages)
+- ✅ Natural responses without citing sources
+- ✅ Professional support referral when information isn't available
+
+### Enhanced Features
+- ✅ Dark/light theme support
+- ✅ Improved response quality with multi-page context
+- ✅ Better keyword matching for accurate page detection
+- ✅ Professional error handling and user experience
+
+### General Pages Available
+The chatbot now automatically has access to:
+1. Home page - Destinations, special offers, featured properties
+2. About Us - Company story, history, team, why choose us
+3. Contact - Phone, email, how to reach us
+4. FAQ - Common questions, policies, minimum stays
+5. Terms & Conditions - Booking terms, cancellation, refund policies
+6. Privacy Policy - Data collection, privacy information
+7. Blog - Travel tips, guides, luxury advisor articles
+
 

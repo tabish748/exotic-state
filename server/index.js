@@ -195,6 +195,11 @@ app.get('/test-widget-local.html', (req, res) => {
   res.sendFile(join(__dirname, '../test-widget-local.html'));
 });
 
+// Serve merit-chat-bot.html
+app.get('/merit-chat-bot.html', (req, res) => {
+  res.sendFile(join(__dirname, '../merit-chat-bot.html'));
+});
+
 // Root endpoint
 app.get('/', (req, res) => {
   res.json({
