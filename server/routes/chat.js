@@ -14,18 +14,57 @@ function detectRequiredPages(message) {
   const messageLower = message.toLowerCase();
   const additionalPages = [];
 
+  // Home page keywords (general overview, destinations, what we offer)
+  const homeKeywords = [
+    'home', 'main page', 'overview', 'what do you offer', 'destinations', 'all locations',
+    'where do you have', 'what areas', 'all properties', 'show me everything'
+  ];
+
   // FAQ-related keywords
   const faqKeywords = [
     'faq', 'minimum', 'stay', 'night', 'discount', 'month', 'children', 'air conditioning',
-    'contact', 'question', 'policy', 'allowed', 'equipped', 'photo', 'image',
+    'question', 'policy', 'allowed', 'equipped', 'photo', 'image',
     'concierge', 'service', 'property manager', 'extended stay', 'long stay'
   ];
 
   // About-related keywords
   const aboutKeywords = [
     'about', 'company', 'who are you', 'history', 'team', 'exotic estates',
-    'specialist', 'work with', 'help with', 'what do you do'
+    'specialist', 'work with', 'help with', 'what do you do', 'since when', 'founded'
   ];
+
+  // Contact-related keywords
+  const contactKeywords = [
+    'contact', 'phone', 'email', 'call', 'reach', 'get in touch', 'speak with',
+    'talk to', 'consultant', 'travel consultant', 'reservation', 'booking contact',
+    'how to contact', 'where to call', 'phone number', 'email address'
+  ];
+
+  // Terms & Conditions keywords
+  const termsKeywords = [
+    'terms', 'conditions', 'terms and conditions', 'booking terms', 'cancellation',
+    'refund', 'policy', 'rules', 'agreement', 'contract', 'booking agreement',
+    'cancellation policy', 'refund policy', 'terms of service'
+  ];
+
+  // Privacy Policy keywords
+  const privacyKeywords = [
+    'privacy', 'privacy policy', 'data', 'information', 'personal information',
+    'cookies', 'data collection', 'how you use', 'what you collect', 'gdpr',
+    'data protection', 'information security'
+  ];
+
+  // Blog keywords
+  const blogKeywords = [
+    'blog', 'article', 'post', 'guide', 'tips', 'advice', 'travel tips',
+    'vacation tips', 'destination guide', 'things to do', 'local guide',
+    'travel blog', 'luxury advisor'
+  ];
+
+  // Check if question is about home/overview
+  if (homeKeywords.some(keyword => messageLower.includes(keyword))) {
+    additionalPages.push('https://www.exoticestates.com/');
+  }
 
   // Check if question is about FAQs
   if (faqKeywords.some(keyword => messageLower.includes(keyword))) {
@@ -35,6 +74,26 @@ function detectRequiredPages(message) {
   // Check if question is about company info
   if (aboutKeywords.some(keyword => messageLower.includes(keyword))) {
     additionalPages.push('https://www.exoticestates.com/about-us');
+  }
+
+  // Check if question is about contact information
+  if (contactKeywords.some(keyword => messageLower.includes(keyword))) {
+    additionalPages.push('https://www.exoticestates.com/contact');
+  }
+
+  // Check if question is about terms & conditions
+  if (termsKeywords.some(keyword => messageLower.includes(keyword))) {
+    additionalPages.push('https://www.exoticestates.com/terms-and-conditions');
+  }
+
+  // Check if question is about privacy policy
+  if (privacyKeywords.some(keyword => messageLower.includes(keyword))) {
+    additionalPages.push('https://www.exoticestates.com/privacy-policy');
+  }
+
+  // Check if question is about blog/guides
+  if (blogKeywords.some(keyword => messageLower.includes(keyword))) {
+    additionalPages.push('https://www.exoticestates.com/blog');
   }
 
   return additionalPages;
