@@ -213,6 +213,41 @@
                 font-size: 24px;
             }
         }
+
+        /* Vapi Widget Send Button Icon Styling */
+        vapi-widget::part(send-button),
+        vapi-widget button[type="submit"],
+        vapi-widget button[aria-label*="send" i],
+        vapi-widget button[aria-label*="Send" i] {
+            position: relative;
+        }
+
+        /* Add send icon using CSS content */
+        vapi-widget button[type="submit"]::after,
+        vapi-widget button[aria-label*="send" i]::after,
+        vapi-widget button[aria-label*="Send" i]::after {
+            content: "➤";
+            font-size: 18px;
+            line-height: 1;
+            display: inline-block;
+            color: white;
+        }
+
+        /* Alternative: Use SVG icon via background */
+        vapi-widget button[type="submit"],
+        vapi-widget button[aria-label*="send" i],
+        vapi-widget button[aria-label*="Send" i] {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='22' y1='2' x2='11' y2='13'%3E%3C/line%3E%3Cpolygon points='22 2 15 22 11 13 2 9 22 2'%3E%3C/polygon%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 18px 18px;
+        }
+
+        /* Hide text if button has text */
+        vapi-widget button[type="submit"]:not(:empty)::before,
+        vapi-widget button[aria-label*="send" i]:not(:empty)::before {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -375,6 +410,88 @@
 
     <!-- Status Check Script -->
     <script>
+        // Function to add send icon to Vapi widget button
+        function addSendIcon() {
+            const vapiWidget = document.querySelector('vapi-widget');
+            if (!vapiWidget) return;
+
+            // Try to access shadow DOM
+            const shadowRoot = vapiWidget.shadowRoot;
+            if (shadowRoot) {
+                // Find send button in shadow DOM
+                const sendButton = shadowRoot.querySelector('button[type="submit"]') ||
+                                 shadowRoot.querySelector('button[aria-label*="send" i]') ||
+                                 shadowRoot.querySelector('button[aria-label*="Send" i]') ||
+                                 shadowRoot.querySelector('button:last-child');
+                
+                if (sendButton && !sendButton.querySelector('.send-icon')) {
+                    // Create SVG send icon
+                    const sendIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                    sendIcon.setAttribute('class', 'send-icon');
+                    sendIcon.setAttribute('width', '20');
+                    sendIcon.setAttribute('height', '20');
+                    sendIcon.setAttribute('viewBox', '0 0 24 24');
+                    sendIcon.setAttribute('fill', 'none');
+                    sendIcon.setAttribute('stroke', 'currentColor');
+                    sendIcon.setAttribute('stroke-width', '2');
+                    sendIcon.setAttribute('stroke-linecap', 'round');
+                    sendIcon.setAttribute('stroke-linejoin', 'round');
+                    sendIcon.style.cssText = 'position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; color: white;';
+                    
+                    // Create path for send icon (paper plane)
+                    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                    path.setAttribute('d', 'M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z');
+                    sendIcon.appendChild(path);
+                    
+                    // Clear button content and add icon
+                    sendButton.innerHTML = '';
+                    sendButton.style.position = 'relative';
+                    sendButton.appendChild(sendIcon);
+                    
+                    console.log('✅ Send icon added to Vapi widget');
+                }
+            } else {
+                // If no shadow DOM, try direct children
+                const sendButton = vapiWidget.querySelector('button[type="submit"]') ||
+                                 vapiWidget.querySelector('button[aria-label*="send" i]') ||
+                                 vapiWidget.querySelector('button:last-child');
+                
+                if (sendButton && !sendButton.querySelector('.send-icon')) {
+                    const sendIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                    sendIcon.setAttribute('class', 'send-icon');
+                    sendIcon.setAttribute('width', '20');
+                    sendIcon.setAttribute('height', '20');
+                    sendIcon.setAttribute('viewBox', '0 0 24 24');
+                    sendIcon.setAttribute('fill', 'none');
+                    sendIcon.setAttribute('stroke', 'white');
+                    sendIcon.setAttribute('stroke-width', '2');
+                    sendIcon.setAttribute('stroke-linecap', 'round');
+                    sendIcon.setAttribute('stroke-linejoin', 'round');
+                    sendIcon.style.cssText = 'position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none;';
+                    
+                    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                    path.setAttribute('d', 'M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z');
+                    sendIcon.appendChild(path);
+                    
+                    sendButton.innerHTML = '';
+                    sendButton.style.position = 'relative';
+                    sendButton.appendChild(sendIcon);
+                    
+                    console.log('✅ Send icon added to Vapi widget (no shadow DOM)');
+                }
+            }
+        }
+
+        // Try to add icon multiple times as widget loads
+        function tryAddSendIcon() {
+            addSendIcon();
+            // Try again after delays to catch widget when it's fully loaded
+            setTimeout(addSendIcon, 1000);
+            setTimeout(addSendIcon, 2000);
+            setTimeout(addSendIcon, 3000);
+            setTimeout(addSendIcon, 5000);
+        }
+
         // Check if widget loaded successfully
         setTimeout(() => {
             const statusIndicator = document.getElementById('statusIndicator');
@@ -383,6 +500,7 @@
             if (vapiWidget) {
                 statusIndicator.className = 'status-indicator success';
                 statusIndicator.innerHTML = '<strong>✅ Chatbot Loaded!</strong><br>Riley is ready to help';
+                tryAddSendIcon();
             } else {
                 statusIndicator.className = 'status-indicator loading';
                 statusIndicator.innerHTML = '<strong>⏳ Loading...</strong><br>Please wait';
@@ -398,11 +516,29 @@
                 const widget = document.querySelector('vapi-widget');
                 if (widget) {
                     console.log('✅ Vapi chatbot widget found!');
+                    tryAddSendIcon();
                 } else {
                     console.log('⏳ Vapi widget loading...');
                 }
             }, 2000);
         });
+
+        // Use MutationObserver to watch for widget changes
+        const observer = new MutationObserver(() => {
+            addSendIcon();
+        });
+
+        // Start observing after a delay
+        setTimeout(() => {
+            const vapiWidget = document.querySelector('vapi-widget');
+            if (vapiWidget) {
+                observer.observe(vapiWidget, {
+                    childList: true,
+                    subtree: true,
+                    attributes: true
+                });
+            }
+        }, 1000);
     </script>
 </body>
 </html>
