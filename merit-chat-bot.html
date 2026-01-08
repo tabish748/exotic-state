@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Merit Investment Bank - AI-Powered Client Advisor</title>
     <style>
+   
         * {
             margin: 0;
             padding: 0;
@@ -294,6 +295,7 @@
             <div class="highlight-box">
                 <h3>🤖 Meet Riley - Your AI Assistant</h3>
                 <p>Riley is an intelligent virtual assistant designed to help you schedule, reschedule, or cancel appointments with Merit Investment Bank. Whether you need to meet with a financial advisor, discuss investment opportunities, or handle account matters, Riley is available 24/7 to assist you.</p>
+                <p style="margin-top: 15px;"><strong>🎤 Voice & 💬 Text Enabled:</strong> Riley supports both voice conversations (bottom-left) and text messaging (bottom-right). Choose the method that's most convenient for you!</p>
             </div>
         </div>
 
@@ -338,7 +340,29 @@
         <!-- How to Use Chatbot -->
         <div class="section">
             <h2>How to Use the Chatbot</h2>
-            <p>The Merit Investment Bank chatbot is located in the bottom-left corner of this page. Simply click on the chat button to get started.</p>
+            <p>Merit Investment Bank offers two ways to interact with Riley, our AI assistant:</p>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 25px 0;">
+                <div style="background: rgba(255, 102, 0, 0.1); padding: 20px; border-radius: 8px; border-left: 4px solid #ff6600;">
+                    <h3 style="color: #ff6600; margin-top: 0;">🎤 Voice Chat (Bottom Left)</h3>
+                    <p>Click the <strong>"Start Voice Chat"</strong> button in the bottom-left corner to have a voice conversation with Riley. Perfect for hands-free, natural dialogue.</p>
+                    <ul style="margin-top: 10px; margin-left: 20px;">
+                        <li>Speak naturally</li>
+                        <li>Real-time voice interaction</li>
+                        <li>Ideal for quick questions</li>
+                    </ul>
+                </div>
+                
+                <div style="background: rgba(14, 165, 233, 0.1); padding: 20px; border-radius: 8px; border-left: 4px solid #0ea5e9;">
+                    <h3 style="color: #0ea5e9; margin-top: 0;">💬 Text Chat (Bottom Right)</h3>
+                    <p>Click the <strong>"Chat with Riley"</strong> button in the bottom-right corner to start a text conversation. Great for detailed questions and when you prefer typing.</p>
+                    <ul style="margin-top: 10px; margin-left: 20px;">
+                        <li>Type your messages</li>
+                        <li>Chat history available</li>
+                        <li>Perfect for detailed inquiries</li>
+                    </ul>
+                </div>
+            </div>
             
             <h3>What You Can Do:</h3>
             <ul>
@@ -390,19 +414,39 @@
       type="text/javascript"
     ></script>
 
+    <!-- Voice Widget (Bottom Left) -->
+    <vapi-widget
+      public-key="ff5b3317-946f-4857-8d07-d692c6834aab"
+      assistant-id="20609f85-f838-49a9-aedc-47f29beda303"
+      mode="voice"
+      theme="dark"
+      size="compact"
+      main-label="Talk to Riley"
+      position="bottom-left"
+      radius="large"
+      base-color="#2d2d2d"
+      accent-color="#fff"
+      button-base-color="#2d2d2d"
+      button-accent-color="#ff6600"
+      start-button-text="Start Voice Chat"
+      end-button-text="End Call"
+      empty-voice-message="Hi! I'm Riley. Need to schedule, reschedule, or cancel an appointment?"
+    ></vapi-widget>
+
+    <!-- Chat Widget (Bottom Right) -->
     <vapi-widget
       public-key="ff5b3317-946f-4857-8d07-d692c6834aab"
       assistant-id="20609f85-f838-49a9-aedc-47f29beda303"
       mode="chat"
       theme="dark"
       size="compact"
-      position="bottom-left"
+      position="bottom-right"
       radius="large"
-      base-color="#2d2d2d"
-      accent-color="#ff6600"
-      button-base-color="#2d2d2d"
-      button-accent-color="#ff6600"
-      main-label="Schedule an Appointment"
+      base-color="#1a1a2e"
+      accent-color="#fff"
+      button-base-color="#1a1a2e"
+      button-accent-color="#0ea5e9"
+      main-label="Chat with Riley"
       empty-chat-message="Hi! I'm Riley. Need to schedule, reschedule, or cancel an appointment?"
     ></vapi-widget>
 
